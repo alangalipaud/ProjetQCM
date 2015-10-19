@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c080e25f-3dca-40cf-9e4a-3912c23df905" name="Default" comment="creation d'un fichier toto pour test proxy">
+    <list default="true" id="c080e25f-3dca-40cf-9e4a-3912c23df905" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ProjetQCM.iws" />
@@ -174,7 +174,13 @@
       <option name="project" value="LOCAL" />
       <updated>1445263014537</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="creation d'un fichier toto pour test proxy">
+      <created>1445263063300</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1445263063300</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
