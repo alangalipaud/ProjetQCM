@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c080e25f-3dca-40cf-9e4a-3912c23df905" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/test" afterPath="$PROJECT_DIR$/web/test" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ProjetQCM.iws" />
@@ -434,7 +433,13 @@
       <option name="project" value="LOCAL" />
       <updated>1445265264602</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="modif">
+      <created>1445265419709</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1445265419709</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
