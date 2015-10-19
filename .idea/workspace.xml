@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c080e25f-3dca-40cf-9e4a-3912c23df905" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/test" afterPath="$PROJECT_DIR$/web/test" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ProjetQCM.iws" />
@@ -422,7 +421,13 @@
       <option name="project" value="LOCAL" />
       <updated>1445265182807</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="modif">
+      <created>1445265260417</created>
+      <option name="number" value="00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1445265260417</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -468,7 +473,8 @@
     <MESSAGE value="creation d'un fichier gugu" />
     <MESSAGE value="creation d'un fichier juju" />
     <MESSAGE value="creation d'un fichier juju 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="creation d'un fichier juju 2" />
+    <MESSAGE value="modif" />
+    <option name="LAST_COMMIT_MESSAGE" value="modif" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
