@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Test C#</h1>
+        <h2>Question à choix multiples</h2>
+        <div class="row">
+            <div class="col-lg-8 col-sm-8 col-xs-8">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <p>Principium autem unde latius se funditabat, emersit ex negotio tali. Chilo ex vicario et coniux eius Maxima nomine, questi apud Olybrium ea tempestate urbi praefectum, vitamque suam venenis petitam adseverantes inpetrarunt ut hi, quos suspectati sunt, ilico rapti conpingerentur in vincula, organarius Sericus et Asbolius palaestrita et aruspex Campensis ?</p>
+                  </div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="...">
+                            </span>
+                            <p class="form-control">Illud autem non dubitatur quod cum esset aliquando</p>
+                        </div><!-- /input-group -->
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="...">
+                            </span>
+                            <p class="form-control">Cyprum itidem insulam procul a continenti</p>
+                        </div><!-- /input-group -->
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="...">
+                            </span>
+                            <p class="form-control">Nunc vero inanes flatus quorundam vile esse</p>
+                        </div><!-- /input-group -->
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="...">
+                            </span>
+                            <p class="form-control">Vita est illis semper in fuga uxoresque</p>
+                        </div><!-- /input-group -->
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-xs-4">
+                <h2><div id="remaining_time" class="label label-default col-lg-offset-2">14:33</div></h2>
+            </div>
+        </div>
+    </div>
+    
+{% endblock body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function (e) {
+        var $worked = $("#remaining_time");
+
+        function update() {
+            var myTime = $worked.html();
+            var ss = myTime.split(":");
+            var dt = new Date();
+            dt.setHours(0);
+            dt.setMinutes(ss[0]);
+            dt.setSeconds(ss[1]);
+
+            var dt2 = new Date(dt.valueOf() - 1000);
+            var temp = dt2.toTimeString().split(" ");
+            var ts = temp[0].split(":");
+
+            $worked.html(ts[1]+":"+ts[2]);
+            setTimeout(update, 1000);
+        }
+
+        setTimeout(update, 1000);
+        });
+    </script>
+{% endblock %}

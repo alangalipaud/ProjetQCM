@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+          <h1>Tests disponibles</h1>
+          <h2>3 nouveau(x) test(s) disponnible(s)</h2>
+          <div class="row">
+            <div class="col-lg-3 col-sm-4 col-xs-6">
+                <div class="thumbnail">
+                    <a title="PHP" href="#">
+                        <img class="img-responsive" src="{{ asset('public/images/php.jpg') }}">
+                        <div class="caption">
+                            <h3 class="text-center">PHP</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-4 col-xs-6">
+                <div class="thumbnail">
+                    <a title="Java EE" href="#">
+                        <img class="img-responsive" src="{{ asset('public/images/Java EE.jpg') }}">
+                        <div class="caption">
+                            <h3 class="text-center">Java EE</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-4 col-xs-6">
+                <div class="thumbnail">
+                    <a title="Java EE" href="#">
+                        <img class="img-responsive" src="{{ asset('public/images/symfony.jpg') }}">
+                        <div class="caption">
+                            <h3 class="text-center">Symfony</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+          </div>
+          <hr>
+          <a href="#" class="col-md-12">
+              <button type="button" class="btn btn-danger btn-lg pull-right">
+                  <span class="glyphicon glyphicon-remove-circle" aria-hidden="true">
+                  </span> 
+                  Fermer
+              </button>
+          </a>
+          <hr>
+        </div>
+      </div>
+
+{% endblock body %}
