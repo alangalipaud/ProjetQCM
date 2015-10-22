@@ -1,3 +1,7 @@
+eni_qcm_stagiaire:
+    resource: "@EniQcmStagiaireBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
-    resource: "@AppBundle/Controller/"
+    resource: "@EniQcmStagiaireBundle/Controller/"
     type:     annotation

@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Currenttest</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Currenttime</th>
+                <td>{{ entity.currenttime|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Iscompleted</th>
+                <td>{{ entity.iscompleted }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('currenttest') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('currenttest_edit', { 'id': entity.registrationid }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

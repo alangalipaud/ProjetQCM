@@ -1,0 +1,7 @@
+eni_qcm_stagiaire_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: EniQcmStagiaireBundle:Default:index }
+    
+eni_qcm_stagiaire:
+    resource: "@EniQcmStagiaireBundle/Controller/"
+    type:     annotation

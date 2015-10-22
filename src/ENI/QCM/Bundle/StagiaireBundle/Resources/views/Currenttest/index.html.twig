@@ -1,0 +1,41 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Currenttest list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Currenttime</th>
+                <th>Iscompleted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('currenttest_show', { 'id': entity.registrationid }) }}">{{ entity.currenttime }}</a></td>
+                <td>{{ entity.iscompleted }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('currenttest_show', { 'id': entity.registrationid }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('currenttest_edit', { 'id': entity.registrationid }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('currenttest_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
