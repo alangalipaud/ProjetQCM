@@ -1,0 +1,40 @@
+{% extends '::base.html.twig' %}
+{% form_theme delete_form 'bootstrap_3_layout.html.twig' %}
+{% block body -%}
+    <div class="col-md-12">
+        <h1>Theme</h1>
+    
+        <table class="record_properties">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ entity.name }}</td>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ entity.id }}</td>
+                </tr>
+            </tbody>
+        </table>
+                
+        <br>        
+        <a href="{{ path('theme') }}">
+            <button type="button" class="btn btn-primary no-margin">
+                Back to the list
+                <span class="glyphicon glyphicon-list" aria-hidden="true">
+                </span>
+            </button>
+        </a>
+        <br>
+        <br>
+        <a href="{{ path('theme_edit', { 'id': entity.id }) }}">
+            <button type="button" class="btn btn-success no-margin">
+                Edit
+                <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                </span>
+            </button>
+        </a>
+        <br><br>
+        {{ form(delete_form) }}
+    </div>
+{% endblock %}

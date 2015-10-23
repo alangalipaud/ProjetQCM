@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block body -%}
+    <div class="col-md-12">
+        <h1>Theme creation</h1>
+    </div>
+    <div class="col-md-12">
+        {{ form(form) }}
+        <a href="{{ path('theme') }}">
+            <button type="button" class="btn btn-primary no-margin">
+                Back to the list
+                <span class="glyphicon glyphicon-list" aria-hidden="true">
+                </span>
+            </button>
+        </a>
+    </div>
+{% endblock %}
