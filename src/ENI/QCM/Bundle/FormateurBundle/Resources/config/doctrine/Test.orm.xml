@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ENI\QCM\Bundle\FormateurBundle\Entity\Test" table="test">
+    <unique-constraints>
+      <unique-constraint name="name" columns="name"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="timepassing" type="time" column="timePassing" nullable="false"/>
+    <field name="description" type="string" column="description" length="2048" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="step1" type="float" column="step1" precision="10" scale="0" nullable="false"/>
+    <field name="step2" type="float" column="step2" precision="10" scale="0" nullable="false"/>
+    <many-to-many field="themeid" target-entity="Theme" mapped-by="testid" fetch="LAZY"/>
+  </entity>
+</doctrine-mapping>

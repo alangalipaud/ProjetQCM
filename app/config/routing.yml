@@ -1,3 +1,8 @@
+eni_qcm_formateur:
+    resource: "@EniQcmFormateurBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 eni_qcm_stagiaire:
     resource: "@EniQcmStagiaireBundle/Resources/config/routing.yml"
     prefix:   /

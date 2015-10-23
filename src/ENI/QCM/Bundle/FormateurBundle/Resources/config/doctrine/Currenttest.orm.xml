@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ENI\QCM\Bundle\FormateurBundle\Entity\Currenttest" table="currenttest">
+    <indexes>
+      <index name="fk_currenttest_issueraffling" columns="issueRafflingId"/>
+    </indexes>
+    <id name="registrationid" association-key="true"/>
+    <field name="currenttime" type="datetime" column="currentTime" nullable="false"/>
+    <field name="iscompleted" type="boolean" column="isCompleted" nullable="false"/>
+    <one-to-one field="registrationid" target-entity="Registration" fetch="LAZY">
+      <join-columns>
+        <join-column name="registrationId" referenced-column-name="id"/>
+      </join-columns>
+    </one-to-one>
+    <many-to-one field="issuerafflingid" target-entity="Issueraffling" fetch="LAZY">
+      <join-columns>
+        <join-column name="issueRafflingId" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
