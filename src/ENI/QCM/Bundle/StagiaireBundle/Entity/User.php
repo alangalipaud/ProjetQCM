@@ -2,43 +2,44 @@
 
 namespace ENI\QCM\Bundle\StagiaireBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * User
  *
- * @ORM\Table(name="user", indexes={@ORM\Index(name="fk_user_status", columns={"statusId"})})
+ * @ORM\Table(name="`user`", indexes={@ORM\Index(name="fk_user_status", columns={"statusId"})})
  * @ORM\Entity
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=50, nullable=false)
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=50, nullable=false)
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @var string
      *
      * @ORM\Column(name="mail", type="string", length=128, nullable=false)
      */
-    private $mail;
+    protected $mail;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=20, nullable=false)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var integer
@@ -47,7 +48,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \ENI\QCM\Bundle\StagiaireBundle\Entity\Status
@@ -57,7 +58,7 @@ class User
      *   @ORM\JoinColumn(name="statusId", referencedColumnName="id")
      * })
      */
-    private $statusid;
+    protected $statusid;
 
 
 

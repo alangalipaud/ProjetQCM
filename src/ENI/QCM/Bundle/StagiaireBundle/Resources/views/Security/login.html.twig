@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    
+    <!--login modal-->
+    <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="text-center">S'authentifier</h1>
+                </div>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">Utilisateur ou mot de passe incorrect.</div>
+                {% endif %}
+                <form class="form col-md-12 center-block" action="{{ path("fos_user_security_check") }}" method="post">
+                    <br />
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+                    <div class="form-group">
+                        <label  for="username">Nom d'utilisateur / Email</label>
+                        <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" name="_password" required="required" />
+                    </div>
+
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                    <label for="remember_me">Se souvenir de moi</label>
+
+                    <input class="btn btn-primary btn-lg btn-block" type="submit" id="_submit" name="_submit" value="S'authentifier" />
+                </form>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

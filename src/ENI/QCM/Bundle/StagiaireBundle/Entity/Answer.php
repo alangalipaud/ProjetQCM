@@ -43,7 +43,7 @@ class Answer
      *   @ORM\JoinColumn(name="questionId", referencedColumnName="id")
      * })
      */
-    private $questionid;
+    private $questionId;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -120,27 +120,27 @@ class Answer
     }
 
     /**
-     * Set questionid
+     * Set questionId
      *
-     * @param \ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionid
+     * @param \ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionId
      *
      * @return Answer
      */
-    public function setQuestionid(\ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionid = null)
+    public function setQuestionid(\ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionId = null)
     {
-        $this->questionid = $questionid;
+        $this->questionId = $questionId;
 
         return $this;
     }
 
     /**
-     * Get questionid
+     * Get questionId
      *
      * @return \ENI\QCM\Bundle\StagiaireBundle\Entity\Question
      */
     public function getQuestionid()
     {
-        return $this->questionid;
+        return $this->questionId;
     }
 
     /**

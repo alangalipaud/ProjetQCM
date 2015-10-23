@@ -36,7 +36,7 @@ class Issueraffling
      *   @ORM\JoinColumn(name="questionId", referencedColumnName="id")
      * })
      */
-    private $questionid;
+    private $questionId;
 
     /**
      * @var \ENI\QCM\Bundle\StagiaireBundle\Entity\Registration
@@ -107,27 +107,27 @@ class Issueraffling
     }
 
     /**
-     * Set questionid
+     * Set questionId
      *
-     * @param \ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionid
+     * @param \ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionId
      *
      * @return Issueraffling
      */
-    public function setQuestionid(\ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionid = null)
+    public function setQuestionId(\ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionId = null)
     {
-        $this->questionid = $questionid;
+        $this->questionId = $questionId;
 
         return $this;
     }
 
     /**
-     * Get questionid
+     * Get questionId
      *
      * @return \ENI\QCM\Bundle\StagiaireBundle\Entity\Question
      */
-    public function getQuestionid()
+    public function getQuestionId()
     {
-        return $this->questionid;
+        return $this->questionId;
     }
 
     /**

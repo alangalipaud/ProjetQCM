@@ -13,11 +13,10 @@
       </options>
     </field>
     <field name="isvalid" type="boolean" column="isValid" nullable="false"/>
-    <many-to-one field="questionid" target-entity="Question" fetch="LAZY">
+    <many-to-one field="questionId" target-entity="Question" fetch="LAZY">
       <join-columns>
         <join-column name="questionId" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-many field="issuerafflingid" target-entity="Issueraffling" mapped-by="answerid" fetch="LAZY"/>
   </entity>
 </doctrine-mapping>
