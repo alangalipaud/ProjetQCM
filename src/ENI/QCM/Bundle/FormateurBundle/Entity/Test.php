@@ -213,5 +213,13 @@ class Test
     {
         return $this->themeid;
     }
+    /**
+     * 
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
+    
 }
 

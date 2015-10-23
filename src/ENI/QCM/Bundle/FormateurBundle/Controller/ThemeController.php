@@ -193,7 +193,8 @@ class ThemeController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('theme_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('theme'));
+            //return $this->redirect($this->generateUrl('theme', array('id' => $id)));
         }
 
         return array(
