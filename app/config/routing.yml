@@ -1,6 +1,11 @@
+
+#eni_qcm_formateur:
+#    resource: "@EniQcmFormateurBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
 eni_qcm_formateur:
-    resource: "@EniQcmFormateurBundle/Controller/"
-    type:     annotation
+    resource: "@EniQcmFormateurBundle/Resources/config/routing.yml"
     prefix:   /
 
 eni_qcm_stagiaire:
@@ -8,5 +13,5 @@ eni_qcm_stagiaire:
     prefix:   /
 
 app:
-    resource: "@EniQcmStagiaireBundle/Controller/"
+    resource: "@EniQcmFormateurBundle/Controller/"
     type:     annotation

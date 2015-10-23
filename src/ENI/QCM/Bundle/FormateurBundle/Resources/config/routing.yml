@@ -1,0 +1,7 @@
+eni_qcm_formateur_homepage:
+    path:     /helloo/{name}
+    defaults: { _controller: EniQcmFormateurBundle:Default:index }
+    
+eni_qcm_formateur:
+    resource: "@EniQcmFormateurBundle/Controller/"
+    type:     annotation
