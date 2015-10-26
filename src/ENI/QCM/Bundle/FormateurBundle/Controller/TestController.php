@@ -30,11 +30,7 @@ class TestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('EniQcmFormateurBundle:Test')->findAll();
-        $this->getDoctrine()->getManager();
-        foreach($entities as $entitie){
-            $entitie->setTimepassing($entitie->getTimepassing()->format('Y-m-d H:i:s'));
-        }
-
+        
         return array(
             'entities' => $entities,
         );

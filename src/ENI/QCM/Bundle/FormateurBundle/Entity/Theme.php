@@ -97,5 +97,9 @@ class Theme
     {
         return $this->testid;
     }
+    
+    public function __toString() {
+        return $this->name;
+    }
 }
 
