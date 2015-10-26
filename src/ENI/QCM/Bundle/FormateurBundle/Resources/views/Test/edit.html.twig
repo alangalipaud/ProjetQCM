@@ -1,5 +1,6 @@
 {% extends '::base.html.twig' %}
 {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
+{% form_theme delete_form 'bootstrap_3_layout.html.twig' %}
 {% block body -%}
     <div class="col-md-12">
         <h1>Test edit</h1>
@@ -13,5 +14,8 @@
                 </span>
             </button>
         </a>
+        <br>
+        <br>
+        {{ form(delete_form) }}
     </div>
 {% endblock %}

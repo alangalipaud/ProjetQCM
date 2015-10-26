@@ -1,36 +1,52 @@
 {% extends '::base.html.twig' %}
-
+{% form_theme delete_form 'bootstrap_3_layout.html.twig' %}
 {% block body -%}
-    <h1>Answer</h1>
+    <div class="col-md-12">
+        <h1>Answer</h1>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Wording</th>
-                <td>{{ entity.wording }}</td>
-            </tr>
-            <tr>
-                <th>Isvalid</th>
-                <td>{{ entity.isvalid }}</td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-        <ul class="record_actions">
-    <li>
+        <table class="record_properties">
+            <tbody>
+                <tr>
+                    <th>Wording</th>
+                    <td>{{ entity.wording }}</td>
+                </tr>
+                <tr>
+                    <th>Isvalid</th>
+                    <td>
+                        {% if entity.isvalid == 1 %}
+                            <span class="glyphicon glyphicon-ok text-success" aria-hidden="true">
+                            </span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true">
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ entity.id }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>        
         <a href="{{ path('answer') }}">
-            Back to the list
+            <button type="button" class="btn btn-primary no-margin">
+                Back to the list
+                <span class="glyphicon glyphicon-list" aria-hidden="true">
+                </span>
+            </button>
         </a>
-    </li>
-    <li>
+        <br>
+        <br>
         <a href="{{ path('answer_edit', { 'id': entity.id }) }}">
-            Edit
+            <button type="button" class="btn btn-success no-margin">
+                Edit
+                <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                </span>
+            </button>
         </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        <br>
+        <br>
+        {{ form(delete_form) }}
+    </div>
 {% endblock %}

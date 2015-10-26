@@ -80,5 +80,9 @@ class Question
     {
         return $this->themeid;
     }
+    
+    public function __toString() {
+        return $this->wording;
+    }
 }
 

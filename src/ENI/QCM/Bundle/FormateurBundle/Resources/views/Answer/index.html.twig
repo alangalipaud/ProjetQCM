@@ -1,43 +1,57 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Answer list</h1>
+    
+    <div class="col-md-12">
+        <h1>Answer list</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Wording</th>
-                <th>Isvalid</th>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('answer_show', { 'id': entity.id }) }}">{{ entity.wording }}</a></td>
-                <td>{{ entity.isvalid }}</td>
-                <td>{{ entity.id }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('answer_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('answer_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('answer_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Wording</th>
+                    <th>Isvalid</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('answer_show', { 'id': entity.id }) }}">{{ entity.wording }}</a></td>
+                    <td>
+                        {% if entity.isvalid == 1 %}
+                            <span class="glyphicon glyphicon-ok text-success" aria-hidden="true">
+                            </span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true">
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('answer_show', { 'id': entity.id }) }}">
+                            <button type="button" class="btn btn-info no-margin">
+                                Show
+                                <span class="glyphicon glyphicon-align-left" aria-hidden="true">
+                                </span>
+                            </button>
+                        </a>
+                        <a href="{{ path('answer_edit', { 'id': entity.id }) }}">
+                            <button type="button" class="btn btn-success no-margin">
+                                Edit
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                                </span>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('answer_new') }}">
+            <button type="button" class="btn btn-success no-margin">
+                Create
+            <span class="glyphicon glyphicon-plus" aria-hidden="true">
+            </span>
+            </button>
+        </a>
+    </div>
+{% endblock %}
