@@ -1,54 +1,56 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Test list</h1>
+    <div class="col-md-12">
+        <h1>Test list</h1>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Timepassing</th>
-                <th>Description</th>
-                <th>Step1</th>
-                <th>Step2</th>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('test_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
-                <td>{{ entity.timepassing|date('H:i:s') }}</td>
-                <td>{{ entity.description }}</td>
-                <td>{{ entity.step1 }}</td>
-                <td>{{ entity.step2 }}</td>
-                <td>{{ entity.id }}</td>
-                <td>
-                    <a href="{{ path('test_show', { 'id': entity.id }) }}">
-                        <button type="button" class="btn btn-info no-margin">
-                            Show
-                            <span class="glyphicon glyphicon-align-left" aria-hidden="true">
-                            </span>
-                        </button>
-                    </a>
-                    <a href="{{ path('test_edit', { 'id': entity.id }) }}">
-                        <button type="button" class="btn btn-success no-margin">
-                            Edit
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                            </span>
-                        </button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('test_new') }}">
-        <button type="button" class="btn btn-success no-margin">
-            Create
-        <span class="glyphicon glyphicon-plus" aria-hidden="true">
-        </span>
-        </button>
-    </a>
-    {% endblock %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Timepassing</th>
+                    <th>Description</th>
+                    <th>Step1</th>
+                    <th>Step2</th>
+                    <th>Id</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('test_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                    <td>{{ entity.timepassing|date('H:i:s') }}</td>
+                    <td>{{ entity.description }}</td>
+                    <td>{{ entity.step1 }}</td>
+                    <td>{{ entity.step2 }}</td>
+                    <td>{{ entity.id }}</td>
+                    <td>
+                        <a href="{{ path('test_show', { 'id': entity.id }) }}">
+                            <button type="button" class="btn btn-info no-margin">
+                                Show
+                                <span class="glyphicon glyphicon-align-left" aria-hidden="true">
+                                </span>
+                            </button>
+                        </a>
+                        <a href="{{ path('test_edit', { 'id': entity.id }) }}">
+                            <button type="button" class="btn btn-success no-margin">
+                                Edit
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                                </span>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('test_new') }}">
+            <button type="button" class="btn btn-success no-margin">
+                Create
+            <span class="glyphicon glyphicon-plus" aria-hidden="true">
+            </span>
+            </button>
+        </a>
+    </div>
+{% endblock %}
