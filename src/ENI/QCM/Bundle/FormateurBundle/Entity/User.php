@@ -167,5 +167,9 @@ class User
     {
         return $this->statusid;
     }
+    
+    public function __toString() {
+        return $this->firstname.' '.$this->lastname;
+    }
 }
 

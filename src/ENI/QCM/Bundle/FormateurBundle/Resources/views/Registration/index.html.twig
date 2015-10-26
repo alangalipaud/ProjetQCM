@@ -1,43 +1,48 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Registration list</h1>
+    <div class="col-md-12">
+        <h1>Registration list</h1>
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Startdate</th>
-                <th>Enddate</th>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('registration_show', { 'id': entity.id }) }}">{{ entity.startdate }}</a></td>
-                <td>{% if entity.enddate %}{{ entity.enddate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.id }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('registration_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('registration_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('registration_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Startdate</th>
+                    <th>Enddate</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('registration_show', { 'id': entity.id }) }}">{{ entity.startdate|date('Y-m-d H:i:s') }}</a></td>
+                    <td>{% if entity.enddate %}{{ entity.enddate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                        <a href="{{ path('registration_show', { 'id': entity.id }) }}">
+                            <button type="button" class="btn btn-info no-margin">
+                                Show
+                                <span class="glyphicon glyphicon-align-left" aria-hidden="true">
+                                </span>
+                            </button>
+                        </a>
+                        <a href="{{ path('registration_edit', { 'id': entity.id }) }}">
+                            <button type="button" class="btn btn-success no-margin">
+                                Edit
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                                </span>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('registration_new') }}">
+            <button type="button" class="btn btn-success no-margin">
+                Create
+            <span class="glyphicon glyphicon-plus" aria-hidden="true">
+            </span>
+            </button>
+        </a>
+    </div>
+{% endblock %}
