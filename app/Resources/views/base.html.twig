@@ -19,20 +19,23 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body class="container">
-        {% if is_granted('FORMATEUR') %}
-            I'm a Formateur<br>
-            {{ app.user.username }}<br>
-        {% elseif is_granted('STAGIAIRE')%}
-            I'm a Stagiaire<br>
-            {{ app.user.username }}<br>
-        {% else %}
-            I'm other type<br>
-            {{ app.user.username }}<br>
-            {{ app.user.roles[0] }}
-            {% if app.user.roles[0] == "STAGIAIRE" %}
-                yes, stagiaire
+        {% if app.user.username  is defined %}
+            {% if is_granted('FORMATEUR') %}
+                I'm a Formateur<br>
+                {{ app.user.username }}<br>
+            {% elseif is_granted('STAGIAIRE')%}
+                I'm a Stagiaire<br>
+                {{ app.user.username }}<br>
+            {% else %}
+                I'm other type<br>
+                {{ app.user.username }}<br>
+                {{ app.user.roles[0] }}
+                {% if app.user.roles[0] == "STAGIAIRE" %}
+                    yes, stagiaire
+                {% endif %}
             {% endif %}
         {% endif %}
+        
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script src="{{ asset('public/js/bootstrap.min.js') }}"></script>

@@ -4,7 +4,7 @@
   xmlns:xslthl="http://xslthl.sf.net" exclude-result-prefixes="xslthl d" version="1.0">
   
   <!-- ********************************************************************
-     $Id: e64dde94630b1f7a0ce38edf91a94781856ee76a $
+     $Id: 45a623de1770c996746b323614dc184db67efa6f $
      ********************************************************************
 
      This file is part of the XSL DocBook Stylesheet distribution.

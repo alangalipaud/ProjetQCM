@@ -4,7 +4,7 @@
      * The Hello World class!
      *
      * @author Michiel Rook
-     * @version $Id: 2426f17cfc5bfcce69c158b5ae4efdb87bfd9a58 $
+     * @version $Id: 6d0faa2d895d9326430e447bdef12f4815068a42 $
      * @package hello.world
      */
     class HelloWorld
