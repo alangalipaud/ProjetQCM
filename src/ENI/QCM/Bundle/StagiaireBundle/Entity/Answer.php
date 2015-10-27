@@ -176,4 +176,10 @@ class Answer
     {
         return $this->issuerafflingid;
     }
+    /**
+     * @var \ENI\QCM\Bundle\StagiaireBundle\Entity\Question
+     */
+    private $questionid;
+
+
 }

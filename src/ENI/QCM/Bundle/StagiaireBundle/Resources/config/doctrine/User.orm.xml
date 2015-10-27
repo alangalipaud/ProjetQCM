@@ -7,25 +7,20 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="lastname" type="string" column="lastName" length="50" nullable="false">
+    <field name="lastname" type="string" column="lastName" length="50" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="firstname" type="string" column="firstName" length="50" nullable="false">
+    <field name="firstname" type="string" column="firstName" length="50" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="mail" type="string" column="mail" length="128" nullable="false">
+    <field name="mail" type="string" column="mail" length="128" nullable="true">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <many-to-one field="statusid" target-entity="Status" fetch="LAZY">
-      <join-columns>
-        <join-column name="statusId" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
   </entity>
 </doctrine-mapping>

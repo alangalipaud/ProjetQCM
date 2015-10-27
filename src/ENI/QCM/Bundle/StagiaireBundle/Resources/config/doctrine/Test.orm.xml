@@ -20,6 +20,5 @@
     </field>
     <field name="step1" type="float" column="step1" precision="10" scale="0" nullable="false"/>
     <field name="step2" type="float" column="step2" precision="10" scale="0" nullable="false"/>
-    <many-to-many field="themeid" target-entity="Theme" mapped-by="testid" fetch="LAZY"/>
   </entity>
 </doctrine-mapping>

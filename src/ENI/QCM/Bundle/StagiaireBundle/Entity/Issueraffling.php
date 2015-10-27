@@ -36,7 +36,7 @@ class Issueraffling
      *   @ORM\JoinColumn(name="questionId", referencedColumnName="id")
      * })
      */
-    private $questionId;
+    private $questionid;
 
     /**
      * @var \ENI\QCM\Bundle\StagiaireBundle\Entity\Registration

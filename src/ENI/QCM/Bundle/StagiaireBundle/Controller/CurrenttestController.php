@@ -28,9 +28,12 @@ class CurrenttestController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->findAll();
-
+        
+        $currentTests = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->findAll();
+        foreach ($currentTests as &$currentTest) {
+            $entities[] = array('currentTest' => $currentTest , 'numberofquestions' => $this->sumQuestionNumber($currentTest->getRegistrationid()->getTestid()));
+        }
+        
         return array(
             'entities' => $entities,
         );
@@ -243,5 +246,23 @@ class CurrenttestController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    private function sumQuestionNumber($testId) {
+
+        $queryScore = $this->getDoctrine()
+            ->getRepository('EniQcmStagiaireBundle:Section');
+
+        $queryAvgScore = $queryScore->createQueryBuilder('g')
+            ->select("sum(g.numberofquestionsasked)")
+            ->where('g.testid = :testid')
+            ->setParameter('testid', $testId)
+            ->getQuery();
+
+        $avgScore = $queryAvgScore->getResult();
+
+        $result = $avgScore;
+
+        return $result[0][1];
     }
 }

@@ -13,8 +13,9 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('EniQcmStagiaireBundle:Login:index.html.twig', array(
+        /*return $this->render('EniQcmStagiaireBundle:Login:index.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-            ));
+            ));*/
+        return $this->forward('EniQcmStagiaireBundle:Currenttest:index');
     }
 }
