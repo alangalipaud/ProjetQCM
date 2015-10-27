@@ -20,20 +20,14 @@
     </head>
     <body class="container">
         {% if app.user.username  is defined %}
-            {% if is_granted('FORMATEUR') %}
+            {% if app.user.hasRole('FORMATEUR') %}
                 I'm a Formateur<br>
-                {{ app.user.username }}<br>
-            {% elseif is_granted('STAGIAIRE')%}
+            {% elseif app.user.hasRole('STAGIAIRE')%}
                 I'm a Stagiaire<br>
-                {{ app.user.username }}<br>
             {% else %}
                 I'm other type<br>
-                {{ app.user.username }}<br>
-                {{ app.user.roles[0] }}
-                {% if app.user.roles[0] == "STAGIAIRE" %}
-                    yes, stagiaire
-                {% endif %}
             {% endif %}
+            {{ app.user.username }}
         {% endif %}
         
         {% block body %}{% endblock %}

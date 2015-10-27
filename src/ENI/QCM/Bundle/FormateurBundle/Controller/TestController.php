@@ -75,7 +75,7 @@ class TestController extends Controller
             'action' => $this->generateUrl('test_create'),
             'method' => 'POST',
         ));
-
+        
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
@@ -191,6 +191,35 @@ class TestController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            echo 'yes';
+            /*
+             // Récupération de l'entity manager du service doctrine
+            $em = $this->getDoctrine()->getManager();
+            // Récupération du repository utilisateur (gestionnaire de la collection d'uilisateur)
+            $repoCategorie = $em->getRepository('EniLenicoinBundle:Categorie');
+            $categorie = $repoCategorie->find($id);
+            $em->persist($categorie);
+            $em->flush();
+            
+            $section= new \ENI\QCM\Bundle\FormateurBundle\Entity\Section();
+            $section->setTestid();
+            $section->setThemeid();
+            $section->setNumberofquestionsasked($numberofquestionsasked);
+            */
+            
+            var_dump($entity->getThemeid()[0]->getId());
+            //$entity->addThemeid($entity->getThemeid()[0]);
+            
+            $em = $this->getDoctrine()->getManager();
+            foreach ($entity->getThemeid() as $theme){
+                //var_dump($theme->getId());
+                $section= new \ENI\QCM\Bundle\FormateurBundle\Entity\Section();
+                $section->setTestid($entity);
+                $section->setThemeid($theme);
+                $section->setNumberofquestionsasked(0);
+                var_dump($section);
+                $em->persist($section);
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('test_edit', array('id' => $id)));

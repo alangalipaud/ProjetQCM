@@ -269,4 +269,9 @@ class User extends BaseUser
     {
         return $this->credentialsExpireAt;
     }
+    
+    public function hasRole($role) {
+        if(in_array($role, $this->getRoles())) return true;
+        return false;
+    }
 }

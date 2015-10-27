@@ -9,5 +9,15 @@
         <option name="fixed"/>
       </options>
     </field>
+    <many-to-many field="testid" target-entity="Test" inversed-by="themeid" fetch="LAZY">
+      <join-table name="section">
+        <join-columns>
+          <join-column name="themeId" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="testId" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
   </entity>
 </doctrine-mapping>

@@ -22,10 +22,6 @@
         <option name="fixed"/>
       </options>
     </field>
-    <many-to-one field="statusid" target-entity="Status" fetch="LAZY">
-      <join-columns>
-        <join-column name="statusId" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
+    
   </entity>
 </doctrine-mapping>

@@ -5,6 +5,8 @@ namespace ENI\QCM\Bundle\FormateurBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+use Doctrine\ORM\EntityRepository;
 
 class TestType extends AbstractType
 {
@@ -20,7 +22,8 @@ class TestType extends AbstractType
             ->add('description')
             ->add('step1')
             ->add('step2')
-            ->add('themeid')
+            ->add('themeid', 'entity', array('multiple' => true,
+            'class' => 'EniQcmFormateurBundle:Theme'))
         ;
     }
     
