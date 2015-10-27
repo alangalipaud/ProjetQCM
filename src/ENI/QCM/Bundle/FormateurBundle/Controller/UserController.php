@@ -47,15 +47,26 @@ class UserController extends Controller
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+        
         if ($form->isValid()) {
+            /*attrubut roles*/
+            $status = $entity->getStatusid();
+            $role = array($status);
+            $entity->setRoles($role);
+            /*Encode password*/
+            $encoder = $this->get('security.encoder_factory')->getEncoder($entity);
+            $encodedPass = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($encodedPass);
+            /*Active account*/
+            $entity->setEnabled(true);
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }
-
+        
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -191,6 +202,15 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            /*attrubut roles*/
+            $status = $entity->getStatusid();
+            $role = array($status);
+            $entity->setRoles($role);
+            /*Encode password*/
+            $encoder = $this->get('security.encoder_factory')->getEncoder($entity);
+            $encodedPass = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($encodedPass);
+            
             $em->flush();
 
             return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));

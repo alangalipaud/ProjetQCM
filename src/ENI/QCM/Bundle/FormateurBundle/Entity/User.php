@@ -2,40 +2,64 @@
 
 namespace ENI\QCM\Bundle\FormateurBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * User
+ *
+ * @ORM\Table(name="`user`", indexes={@ORM\Index(name="fk_user_status", columns={"statusId"})})
+ * @ORM\Entity
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="lastName", type="string", length=50, nullable=false)
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="firstName", type="string", length=50, nullable=false)
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=128, nullable=false)
      */
-    private $mail;
+    protected $mail;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=20, nullable=false)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \ENI\QCM\Bundle\FormateurBundle\Entity\Status
+     *
+     * @ORM\ManyToOne(targetEntity="ENI\QCM\Bundle\FormateurBundle\Entity\Status")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="statusId", referencedColumnName="id")
+     * })
      */
-    private $statusid;
+    protected $statusid;
+
 
 
     /**
@@ -48,7 +72,7 @@ class User
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-    
+
         return $this;
     }
 
@@ -72,7 +96,7 @@ class User
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-    
+
         return $this;
     }
 
@@ -96,7 +120,7 @@ class User
     public function setMail($mail)
     {
         $this->mail = $mail;
-    
+
         return $this;
     }
 
@@ -120,7 +144,7 @@ class User
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
@@ -154,7 +178,7 @@ class User
     public function setStatusid(\ENI\QCM\Bundle\FormateurBundle\Entity\Status $statusid = null)
     {
         $this->statusid = $statusid;
-    
+
         return $this;
     }
 
@@ -169,7 +193,6 @@ class User
     }
     
     public function __toString() {
-        return $this->firstname.' '.$this->lastname;
+        return $this->lastname.' - '.$this->firstname.' : '.$this->mail;
     }
 }
-
