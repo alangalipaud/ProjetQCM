@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ENI\QCM\Bundle\FormateurBundle\Entity\Section" table="section">
+    <indexes>
+      <index name="IDX_2D737AEF31B588BA" columns="testId"/>
+      <index name="IDX_2D737AEFDC0A2954" columns="themeId"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="unique_index" columns="themeId,testId"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="numberofquestionsasked" type="integer" column="numberOfQuestionsAsked" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <many-to-one field="themeid" target-entity="Theme" fetch="LAZY">
+      <join-columns>
+        <join-column name="themeId" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="testid" target-entity="Test" fetch="LAZY">
+      <join-columns>
+        <join-column name="testId" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

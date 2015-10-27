@@ -5,7 +5,7 @@
       <index name="fk_currenttest_issueraffling" columns="issueRafflingId"/>
     </indexes>
     <id name="registrationid" association-key="true"/>
-    <field name="currenttime" type="datetime" column="currentTime" nullable="false"/>
+    <field name="currenttime" type="time" column="currentTime" nullable="false"/>
     <field name="iscompleted" type="boolean" column="isCompleted" nullable="false"/>
     <one-to-one field="registrationid" target-entity="Registration" fetch="LAZY">
       <join-columns>
