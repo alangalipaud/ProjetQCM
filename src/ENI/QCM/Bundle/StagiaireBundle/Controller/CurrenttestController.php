@@ -17,7 +17,7 @@ use ENI\QCM\Bundle\StagiaireBundle\Form\CurrenttestType;
  */
 class CurrenttestController extends Controller
 {
-
+    
     /**
      * Lists all Currenttest entities.
      *
@@ -105,7 +105,7 @@ class CurrenttestController extends Controller
     /**
      * Finds and displays a Currenttest entity.
      *
-     * @Route("/{id}", name="currenttest_show")
+     * @Route("/{id}", name="user_currenttest_show")
      * @Method("GET")
      * @Template()
      */
@@ -114,7 +114,12 @@ class CurrenttestController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
+        $_SESSION['timeOfQuestionShow'] = new \DateTime('NOW');
+        $_SESSION['currentTest'] = $id;
+        $issueRaffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->find($entity->getIssueRafflingId()); 
 
+        $answers = $em->getRepository('EniQcmStagiaireBundle:Answer')->findBy(array('questionid' => $issueRaffling->getQuestionId()));
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Currenttest entity.');
         }
@@ -123,8 +128,32 @@ class CurrenttestController extends Controller
 
         return array(
             'entity'      => $entity,
+            'answers'     => $answers,
             'delete_form' => $deleteForm->createView(),
         );
+    }
+    
+    /**
+     * Finds and displays a Currenttest entity.
+     *
+     * @Route("/{id}", name="user_currenttest_post")
+     * @Method("POST")
+     * @Template()
+     */
+    public function writeAction(Request $request)
+    {
+        $answers = $request->get('answers');
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($_SESSION['currentTest']);
+        $issueRaffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->find($entity->getIssueRafflingId());
+        foreach ($answers as &$answerId){
+            $answer = $em->getRepository('EniQcmStagiaireBundle:Answer')->find($answerId);
+            $issueRaffling->addAnswerid($answer);
+        }
+        $em->flush();
+        return $this->render('EniQcmStagiaireBundle:Currenttest:return.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+        ));
     }
 
     /**
