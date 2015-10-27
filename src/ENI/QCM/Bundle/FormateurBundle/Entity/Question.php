@@ -85,4 +85,3 @@ class Question
         return $this->wording;
     }
 }
-

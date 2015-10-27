@@ -156,4 +156,3 @@ class Answer
         return $this->issuerafflingid;
     }
 }
-

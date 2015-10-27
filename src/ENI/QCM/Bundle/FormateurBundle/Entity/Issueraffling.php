@@ -156,4 +156,3 @@ class Issueraffling
         return $this->answerid;
     }
 }
-

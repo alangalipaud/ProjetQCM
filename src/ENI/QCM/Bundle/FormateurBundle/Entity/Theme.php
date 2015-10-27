@@ -102,4 +102,3 @@ class Theme
         return $this->name;
     }
 }
-

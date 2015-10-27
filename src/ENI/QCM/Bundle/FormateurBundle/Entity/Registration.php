@@ -139,4 +139,3 @@ class Registration
         return $this->testid;
     }
 }
-

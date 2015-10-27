@@ -56,4 +56,3 @@ class Status
         return $this->wording;
     }
 }
-

@@ -124,4 +124,3 @@ class Currenttest
         return $this->issuerafflingid;
     }
 }
-
