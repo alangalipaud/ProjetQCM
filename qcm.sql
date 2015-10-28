@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mar 27 Octobre 2015 à 19:57
+-- Généré le: Mer 28 Octobre 2015 à 16:55
 -- Version du serveur: 5.6.12-log
 -- Version de PHP: 5.4.12
 
@@ -208,11 +208,17 @@ INSERT INTO `answer` (`id`, `wording`, `isValid`, `questionId`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `answergiven` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `issueRafflingId` int(11) NOT NULL,
   `answerId` int(11) NOT NULL,
-  PRIMARY KEY (`issueRafflingId`,`answerId`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_index` (`issueRafflingId`,`answerId`),
   KEY `fk_answerGiven_answer` (`answerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+
+--
+-- Contenu de la table `answergiven`
+--
 
 -- --------------------------------------------------------
 
@@ -234,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `currenttest` (
 --
 
 INSERT INTO `currenttest` (`registrationId`, `issueRafflingId`, `currentTime`, `isCompleted`) VALUES
-(6, 58, '00:40:00', 0);
+(6, 59, '00:10:00', 0);
 
 -- --------------------------------------------------------
 

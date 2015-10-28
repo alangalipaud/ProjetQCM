@@ -9,25 +9,15 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="ismarqueted" type="boolean" column="isMarqueted" nullable="false"/>
-    <many-to-one field="questionid" target-entity="Question" fetch="LAZY">
-      <join-columns>
-        <join-column name="questionId" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="registrationid" target-entity="Registration" fetch="LAZY">
       <join-columns>
         <join-column name="registrationId" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-many field="answerid" target-entity="Answer" inversed-by="issuerafflingid" fetch="LAZY">
-      <join-table name="answergiven">
-        <join-columns>
-          <join-column name="issueRafflingId" referenced-column-name="questionId"/>
-        </join-columns>
-        <inverse-join-columns>
-          <join-column name="answerId" referenced-column-name="id"/>
-        </inverse-join-columns>
-      </join-table>
-    </many-to-many>
+    <many-to-one field="questionid" target-entity="Question" fetch="LAZY">
+      <join-columns>
+        <join-column name="questionId" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
   </entity>
 </doctrine-mapping>

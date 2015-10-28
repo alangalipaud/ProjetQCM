@@ -115,21 +115,25 @@ class CurrenttestController extends Controller
 
         $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
         $_SESSION['timeOfQuestionShow'] = new \DateTime('NOW');
-        $_SESSION['currentTest'] = $id;
-        $issueRaffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->find($entity->getIssueRafflingId()); 
-
+        if($_SESSION['currentTest'] != $id){
+            $_SESSION['currentTest'] = $id;
+            $_SESSION['indexOfQuestion'] = 1;
+            $this->container->get('request')->getSession()->set('numberOfQuestions',$this->sumQuestionNumber($entity->getRegistrationid()->getTestid()));
+        }
+        $this->container->get('request')->getSession()->set('indexOfQuestion', $_SESSION['indexOfQuestion']);
+        $allissueraffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')
+                ->findBy(array('registrationid' => $entity->getRegistrationid()));
+        $_SESSION['Issueraffling']=$allissueraffling[$_SESSION['indexOfQuestion']-1];
+        $issueRaffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->find($_SESSION['Issueraffling']);
         $answers = $em->getRepository('EniQcmStagiaireBundle:Answer')->findBy(array('questionid' => $issueRaffling->getQuestionId()));
         
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Currenttest entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
             'answers'     => $answers,
-            'delete_form' => $deleteForm->createView(),
         );
     }
     
@@ -143,138 +147,160 @@ class CurrenttestController extends Controller
     public function writeAction(Request $request)
     {
         $answers = $request->get('answers');
+        var_dump($answers);
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($_SESSION['currentTest']);
         $issueRaffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->find($entity->getIssueRafflingId());
-        foreach ($answers as &$answerId){
-            $answer = $em->getRepository('EniQcmStagiaireBundle:Answer')->find($answerId);
-            $issueRaffling->addAnswerid($answer);
+        $previousanswersgiven = $em->getRepository('EniQcmStagiaireBundle:Answergiven')->findBy(array('issuerafflingid' => $issueRaffling));
+        foreach($previousanswersgiven as $previousanswergiven){
+            $em->remove($previousanswergiven);
         }
         $em->flush();
-        return $this->render('EniQcmStagiaireBundle:Currenttest:return.html.twig', array(
+        if($answers != null){
+            foreach ($answers as &$answerId){
+            $answer = $em->getRepository('EniQcmStagiaireBundle:Answer')->find($answerId);
+            $answergiven = new \ENI\QCM\Bundle\StagiaireBundle\Entity\Answergiven();
+            $answergiven->setIssuerafflingid($issueRaffling);
+            $answergiven->setAnswerid($answer);
+            $em->persist($answergiven);
+        }
+        }
+        if($request->get('isMarqueted') == 'on'){
+            $issueRaffling->setIsmarqueted(true);
+        }
+        else
+        {
+            $issueRaffling->setIsmarqueted(false);
+        }
+        $em->flush();
+        
+        /*
+         * Passage à la question Suivante
+         */
+        $othersissueraffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')
+                ->findBy(array('registrationid' => $issueRaffling->getRegistrationid()));
+        if($_SESSION['indexOfQuestion'] < sizeof($othersissueraffling)){
+            $_SESSION['indexOfQuestion'] = $_SESSION['indexOfQuestion'] + 1;
+            $nextissueraffling = $othersissueraffling[$_SESSION['indexOfQuestion']-1];
+            $entity->setIssueRafflingId($nextissueraffling);
+            $em->flush();
+        }
+        
+        /*
+         * Revient sur une demande de question
+         */
+        /*return $this->render('EniQcmStagiaireBundle:Currenttest:return.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
-        ));
+        ));*/
+        if($request->get('action') == 'Next'){
+            return $this->forward('EniQcmStagiaireBundle:Currenttest:show', array('id' => $_SESSION['currentTest']));
+        }
+        if($request->get('action') == 'Synthese'){
+            return $this->forward('EniQcmStagiaireBundle:Currenttest:synthese', array('id' => $_SESSION['currentTest']));
+        }
     }
-
+    
     /**
-     * Displays a form to edit an existing Currenttest entity.
+     * Finds and displays a Currenttest Synthese.
      *
-     * @Route("/{id}/edit", name="currenttest_edit")
+     * @Route("/synthese/{id}", name="user_currenttest_show_synthese")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function syntheseAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Currenttest entity.');
+        $currentTest = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
+        $issuerafflings = $em->getRepository('EniQcmStagiaireBundle:IssueRaffling')->findBy(array('registrationid' => $currentTest->getRegistrationId()));
+        
+        $allissuerafflings = null;
+        $numberOfQuestionsAnswered = 0;
+        
+        foreach ($issuerafflings as $issueraffling){
+            $answergiven = $em->getRepository('EniQcmStagiaireBundle:Answergiven')->findBy(array('issuerafflingid' => $issueraffling));
+            if($answergiven == null){
+                $statementofanswer = "noanswered";
+                $classstatement = "btn-danger";
+            }
+            else{
+                $statementofanswer = "answered";
+                $classstatement = "btn-success";
+                $numberOfQuestionsAnswered++;
+            }
+            if($issueraffling->getIsMarqueted() == true){
+                $statementofanswer = "marqueted";
+                $classstatement = "btn-warning";
+            }
+            $allissuerafflings[] = array('issueraffing' => $issueraffling, 'statementofanswer' => $statementofanswer, 'classstatement' => $classstatement);
         }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
+        
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'currenttest'   => $currentTest,
+            'allissuerafflings' => $allissuerafflings,
+            'numberOfQuestionsAnswered' => $numberOfQuestionsAnswered,
         );
     }
-
+    
     /**
-    * Creates a form to edit a Currenttest entity.
-    *
-    * @param Currenttest $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Currenttest $entity)
-    {
-        $form = $this->createForm(new CurrenttestType(), $entity, array(
-            'action' => $this->generateUrl('currenttest_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
-        return $form;
-    }
-    /**
-     * Edits an existing Currenttest entity.
+     * Finds and displays a Currenttest Synthese.
      *
-     * @Route("/{id}", name="currenttest_update")
-     * @Method("PUT")
-     * @Template("EniQcmStagiaireBundle:Currenttest:edit.html.twig")
+     * @Route("/question/{id}", name="user_currenttest_show_question")
+     * @Method({"GET", "POST"})
+     * @Template()
      */
-    public function updateAction(Request $request, $id)
+    public function selectQuestionAction(Request $request, $id)
     {
+        var_dump($request->getMethod());
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Currenttest entity.');
+        $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($_SESSION['currentTest']);
+        $issueRaffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->find($entity->getIssueRafflingId());
+        
+        if($request->getMethod() == "GET"){
+            $_SESSION['indexOfQuestion'] = $id;
         }
+        else{
+            /*** Enregistrement des données ***/
+            $answers = $request->get('answers');
+            var_dump($answers);
+            $previousanswersgiven = $em->getRepository('EniQcmStagiaireBundle:Answergiven')->findBy(array('issuerafflingid' => $issueRaffling));
+            foreach($previousanswersgiven as $previousanswergiven){
+                $em->remove($previousanswergiven);
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
             $em->flush();
-
-            return $this->redirect($this->generateUrl('currenttest_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-    /**
-     * Deletes a Currenttest entity.
-     *
-     * @Route("/{id}", name="currenttest_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Currenttest entity.');
+            if($answers != null){
+                foreach ($answers as &$answerId){
+                $answer = $em->getRepository('EniQcmStagiaireBundle:Answer')->find($answerId);
+                $answergiven = new \ENI\QCM\Bundle\StagiaireBundle\Entity\Answergiven();
+                $answergiven->setIssuerafflingid($issueRaffling);
+                $answergiven->setAnswerid($answer);
+                $em->persist($answergiven);
+            }
+            }
+            if($request->get('isMarqueted') == 'on'){
+                $issueRaffling->setIsmarqueted(true);
+            }
+            else
+            {
+                $issueRaffling->setIsmarqueted(false);
+            }
+            $em->flush();
             }
 
-            $em->remove($entity);
-            $em->flush();
+            /*** Passage à la question suivante ***/
+            $othersissueraffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')
+                    ->findBy(array('registrationid' => $issueRaffling->getRegistrationid()));
+            if($_SESSION['indexOfQuestion'] < sizeof($othersissueraffling) && $_SESSION['indexOfQuestion']>0){
+                $_SESSION['indexOfQuestion']++;
+                $nextissueraffling = $othersissueraffling[$_SESSION['indexOfQuestion']-1];
+                $entity->setIssueRafflingId($nextissueraffling);
+                $em->flush();
+            }
         }
-
-        return $this->redirect($this->generateUrl('currenttest'));
-    }
-
-    /**
-     * Creates a form to delete a Currenttest entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('currenttest_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+        if($request->get('action') == 'Synthese'){
+            return $this->forward('EniQcmStagiaireBundle:Currenttest:synthese', array('id' => $_SESSION['currentTest']));
+        }
+        return $this->forward('EniQcmStagiaireBundle:Currenttest:show', array('id' => $_SESSION['currentTest']));
     }
     
     private function sumQuestionNumber($testId) {

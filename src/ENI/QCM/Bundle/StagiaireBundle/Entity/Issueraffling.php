@@ -177,6 +177,11 @@ class Issueraffling
     {
         $this->answerid->removeElement($answerid);
     }
+    
+    public function removeAllAnswer()
+    {
+        $this->answerid->clear();
+    }
 
     /**
      * Get answerid
