@@ -192,9 +192,7 @@ class User extends BaseUser
         return $this->statusid;
     }
     
-    public function __toString() {
-        return $this->lastname.' - '.$this->firstname.' : '.$this->mail;
-    }
+    
 
     /**
      * Get enabled
@@ -273,5 +271,9 @@ class User extends BaseUser
     public function hasRole($role) {
         if(in_array($role, $this->getRoles())) return true;
         return false;
+    }
+    
+    public function __toString() {
+        return $this->username.' : '.$this->email;
     }
 }

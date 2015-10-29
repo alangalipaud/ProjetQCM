@@ -16,7 +16,7 @@ class ThemeType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('testid')
+            //->add('testid')
         ;
     }
     

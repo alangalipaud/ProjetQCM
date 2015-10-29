@@ -17,7 +17,10 @@
                     <input type="text" id="eni_qcm_bundle_formateurbundle_test_name" name="eni_qcm_bundle_formateurbundle_test[name]" required="required" maxlength="50" class="form-control" value="{{ entity.name }}">
                 </div>
                 {# {{ form(image_form) }} #}
-                <input type="file" name="img">
+                <div class="form-group">
+                    <label class="control-label required" for="img">Image illustration</label>
+                    <input type="file" name="img" >
+                </div>
                 <div class="form-group">
                     <label class="control-label required">Timepassing</label>
                     <div id="eni_qcm_bundle_formateurbundle_test_timepassing" class="form-inline">
@@ -61,19 +64,23 @@
                         {% endfor %}
                     </select>
                 </div>
-                <h2>Paramaters Theme</h2
+                {% if themeAssociate %}
+                    <h2>Paramaters Theme</h2>
+                {% endif %}
                 {% set i = 0 %}
                 {% for theme in themeAssociate %}
                     <br>
                     <div class="form-group">
-                        <label class="control-label required">{{theme.name}}</label><br>
-                        <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_theme">Number of question asked :</label>
-                        <input type="text" id="eni_qcm_bundle_formateurbundle_test_themeidAssociate" name="eni_qcm_bundle_formateurbundle_test[themeidAssociateNumberOfQuestionAsked][{{theme.id}}]" required="required" class="form-control" value="{{numberOfQuestionForAssociateTheme[i].numberofquestionsasked}}">
-                    </div>
-                    <a href="{{ path('section_delete', {'idTest': entity.id, 'idTheme': theme.id }) }}" class="btn btn-danger no-margin">
+                        <a href="{{ path('section_delete', {'idTest': entity.id, 'idTheme': theme.id }) }}" class="btn btn-danger no-margin pull-right">
                             Delete
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
+                        <label class="control-label required">{{theme.name}}</label><br>
+                        
+                        <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_theme">Number of question asked :</label>
+                        <input type="text" id="eni_qcm_bundle_formateurbundle_test_themeidAssociate" name="eni_qcm_bundle_formateurbundle_test[themeidAssociateNumberOfQuestionAsked][{{theme.id}}]" required="required" class="form-control" value="{{numberOfQuestionForAssociateTheme[i].numberofquestionsasked}}">
+                    </div>
+                    
                     {% set i = i+1 %}
                 {% endfor %}
                 <br>
@@ -84,12 +91,10 @@
                 <input type="hidden" id="eni_qcm_bundle_formateurbundle_test__token" name="eni_qcm_bundle_formateurbundle_test[_token]" class="form-control" value="eL-glgxsJk9xKXudIGaVtEbpGKbKck6NsQaDKKtzjsc">
             </div>
         </form>
-        <a href="{{ path('test') }}">
-            <button type="button" class="btn btn-primary no-margin">
-                Back to the list
-                <span class="glyphicon glyphicon-list" aria-hidden="true">
-                </span>
-            </button>
+        <a href="{{ path('test') }}" class="btn btn-primary no-margin">
+            Back to the list
+            <span class="glyphicon glyphicon-list" aria-hidden="true">
+            </span>
         </a>
         <br>
         <br>

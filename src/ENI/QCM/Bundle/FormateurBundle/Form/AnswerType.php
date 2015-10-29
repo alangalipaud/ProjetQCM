@@ -18,7 +18,6 @@ class AnswerType extends AbstractType
             ->add('wording')
             ->add('isvalid')
             ->add('questionid')
-            ->add('issuerafflingid')
         ;
     }
     

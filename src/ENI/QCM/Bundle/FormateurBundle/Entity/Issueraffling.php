@@ -155,4 +155,8 @@ class Issueraffling
     {
         return $this->answerid;
     }
+    
+    public function __toString() {
+        return "issuraffling";
+    }
 }
