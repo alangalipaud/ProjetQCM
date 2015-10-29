@@ -71,10 +71,8 @@
                         <input type="text" id="eni_qcm_bundle_formateurbundle_test_themeidAssociate" name="eni_qcm_bundle_formateurbundle_test[themeidAssociateNumberOfQuestionAsked][{{theme.id}}]" required="required" class="form-control" value="{{numberOfQuestionForAssociateTheme[i].numberofquestionsasked}}">
                     </div>
                     <a href="{{ path('section_delete', {'idTest': entity.id, 'idTheme': theme.id }) }}" class="btn btn-danger no-margin">
-
                             Delete
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-
                     </a>
                     {% set i = i+1 %}
                 {% endfor %}

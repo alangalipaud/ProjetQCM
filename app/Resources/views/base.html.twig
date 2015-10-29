@@ -18,7 +18,8 @@
         
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body class="container">
+    <body>
+        {#
         {% if app.user.username  is defined %}
             {% if app.user.hasRole('FORMATEUR') %}
                 I'm a Formateur<br>
@@ -29,8 +30,31 @@
             {% endif %}
             {{ app.user.username }}
         {% endif %}
+        #}
+        {% if app.user.username  is defined %}
+             {% if app.user.hasRole('FORMATEUR') %}
+                <div class="col-md-2">
+                    <h4>Utilisateur : {{app.user.username}}</h4>
+                    <ul class="nav nav-pills nav-stacked">
+                      <li {% if app.request.attributes.get('_route') == 'user' %}class="active"{% endif %}><a href="{{ path('user') }}">User</a></li>
+                      <li {% if app.request.attributes.get('_route') == 'registration' %}class="active"{% endif %}><a href="{{ path('registration') }}">Registration</a></li>
+                      <li {% if app.request.attributes.get('_route') == 'question' %}class="active"{% endif %}><a href="{{ path('question') }}">Question</a></li>
+                      <li {% if app.request.attributes.get('_route') == 'answer' %}class="active"{% endif %}><a href="{{ path('answer') }}">Answer</a></li>
+                      <li {% if app.request.attributes.get('_route') == 'test' %}class="active"{% endif %}><a href="{{ path('test') }}">Test</a></li>
+                      <li {% if app.request.attributes.get('_route') == 'theme' %}class="active"{% endif %}><a href="{{ path('theme') }}">Theme</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-10">
+            {% endif %}
+        {% endif %}
+            {% block body %}{% endblock %}
+        {% if app.user.username  is defined %}
+            {% if app.user.hasRole('FORMATEUR') %}
+                </div>
+            {% endif %}
+        {% endif %}
         
-        {% block body %}{% endblock %}
+        
         {% block javascripts %}
             <script src="{{ asset('public/js/bootstrap.min.js') }}"></script>
         {% endblock %}
