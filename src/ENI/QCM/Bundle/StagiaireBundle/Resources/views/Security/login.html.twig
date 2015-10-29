@@ -13,7 +13,7 @@
                     <div class="alert alert-danger" role="alert">Utilisateur ou mot de passe incorrect.</div>
                 {% endif %}
                 <form class="form col-md-12 center-block" action="{{ path("fos_user_security_check") }}" method="post">
-                    <br />
+                    <br/>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
                     <div class="form-group">
