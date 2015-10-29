@@ -16,19 +16,15 @@
                     <td><a href="{{ path('question_show', { 'id': entity.id }) }}">{{ entity.wording }}</a></td>
                     <td>
                     <ul>
-                        <a href="{{ path('question_show', { 'id': entity.id }) }}">
-                            <button type="button" class="btn btn-info no-margin">
-                                Show
-                                <span class="glyphicon glyphicon-align-left" aria-hidden="true">
-                                </span>
-                            </button>
+                        <a href="{{ path('question_show', { 'id': entity.id }) }}" class="btn btn-info no-margin">
+                            Show
+                            <span class="glyphicon glyphicon-align-left" aria-hidden="true">
+                            </span>
                         </a>
-                        <a href="{{ path('question_edit', { 'id': entity.id }) }}">
-                            <button type="button" class="btn btn-success no-margin">
-                                Edit
-                                <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                                </span>
-                            </button>
+                        <a href="{{ path('question_edit', { 'id': entity.id }) }}" class="btn btn-success no-margin">
+                            Edit
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                            </span>
                         </a>
                     </ul>
                     </td>
@@ -36,12 +32,10 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('question_new') }}">
-            <button type="button" class="btn btn-success no-margin">
-                Create
+        <a href="{{ path('question_new') }}" class="btn btn-success no-margin">
+            Create
             <span class="glyphicon glyphicon-plus" aria-hidden="true">
             </span>
-            </button>
         </a>
     </div>
 {% endblock %}
