@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use ENI\QCM\Bundle\FormateurBundle\Entity\Theme;
 
-class TestType extends AbstractType
+class EnrichedTestType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,11 +18,14 @@ class TestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+                /*
             ->add('name')
             ->add('timepassing')
             ->add('description')
             ->add('step1')
             ->add('step2')
+                 * 
+                 */
                 /*
             ->add('themeid', 'entity', array('multiple' => true,
             'class' => 'EniQcmFormateurBundle:Theme'))
@@ -53,7 +56,7 @@ class TestType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'ENI\QCM\Bundle\FormateurBundle\Entity\Test'
+            'data_class' => 'ENI\QCM\Bundle\FormateurBundle\Entity\EnrichedTest'
         ));
     }
 

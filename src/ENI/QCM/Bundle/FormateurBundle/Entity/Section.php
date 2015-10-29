@@ -109,5 +109,9 @@ class Section
     {
         return $this->testid;
     }
+    
+    public function __toString() {
+        return (string)$this->numberofquestionsasked;
+    }
 }
 

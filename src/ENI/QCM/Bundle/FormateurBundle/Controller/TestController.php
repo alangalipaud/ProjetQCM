@@ -8,8 +8,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ENI\QCM\Bundle\FormateurBundle\Entity\Test;
+use ENI\QCM\Bundle\FormateurBundle\Entity\Section;
 use ENI\QCM\Bundle\FormateurBundle\Form\TestType;
-
+use ENI\QCM\Bundle\FormateurBundle\Models\Document;
+use ENI\QCM\Bundle\FormateurBundle\Models\UploadFileMover;
+use ENI\QCM\Bundle\FormateurBundle\Form\EnrichedTestType;
+use Doctrine\ORM\EntityRepository;
+use \ENI\QCM\Bundle\FormateurBundle\Entity\EnrichedTest;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Test controller.
  *
@@ -76,6 +82,23 @@ class TestController extends Controller
             'method' => 'POST',
         ));
         
+        $form->add('themeid', 'entity', array('multiple' => true,
+            'class' => 'EniQcmFormateurBundle:Theme',
+            'choices' => $this->getThemeNotAssociateWithTest($entity->getId()),));
+        /*
+        $idTest = $entity->getId();
+        $form->add('themeid', 'entity', array('multiple' => true,
+            'class' => 'EniQcmFormateurBundle:Theme',
+             'query_builder' => function (EntityRepository $t) {
+                return $t->createQueryBuilder('t')
+                        ->select('t')
+                        ->from('EniQcmFormateurBundle:Section' ,'sect')
+                        ->where("t.id!=sect.themeid")
+                        ->andWhere("sect.themeid!= :idTest")->setParameter('idTest', $entity->getId())
+                        ->orderBy('t.id', 'DESC');
+            },
+        ));
+        */
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
@@ -141,95 +164,178 @@ class TestController extends Controller
             throw $this->createNotFoundException('Unable to find Test entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        //$editForm = $this->createEditForm($entity);
+        $themeNotAssociate = $this->getThemeNotAssociateWithTest($id);
+        $themeAssociate = $this->getThemeAssociateWithTest($id);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            //'edit_form'   => $editForm->createView(),
+            'themeNotAssociate' => $themeNotAssociate,
+            'themeAssociate' => $themeAssociate,
+            'numberOfQuestionForAssociateTheme' => $this->getNumberOfQuestionForAssociateTheme($id),
             'delete_form' => $deleteForm->createView(),
+            
+                    
         );
     }
-
+    /*
     /**
     * Creates a form to edit a Test entity.
     *
     * @param Test $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
-    */
+    * /
     private function createEditForm(Test $entity)
     {
+        //Original
+        /*
         $form = $this->createForm(new TestType(), $entity, array(
             'action' => $this->generateUrl('test_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
+        $form->add('themeid', 'entity', array('multiple' => true,
+            'class' => 'EniQcmFormateurBundle:Theme',
+            'required' => false,
+            'choices' => $this->getThemeNotAssociateWithTest($entity->getId()),));
+        */
+        
+        
+        
+        
+        /*
+        $newEntity = new EnrichedTest();
+        $newEntity->setTest($entity);
+        $form = $this->createForm(new EnrichedTestType(), $newEntity, array(
+            'action' => $this->generateUrl('test_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+            'data_class' => 'ENI\QCM\Bundle\FormateurBundle\Entity\EnrichedTest'
+        ))*/
+        //var_dump($form);
+        //die();
+        //$form->add('getTest()->themeid', array('data_class' => 'ENI\QCM\Bundle\FormateurBundle\Entity\Test'));
+        /*
+        $form->add(
+            $form->create('test', 'form')
+                ->add('name', 'text')
+                ->add('email', 'email')
+        );
+         * 
+         */
+        //$form->add('test', 'entity', array('type' => new TestType()));
+        /*
+        $form->add('themeid', 'entity', array('multiple' => true,
+            'class' => 'EniQcmFormateurBundle:Theme',
+            'required' => false,
+            'choices' => $this->getThemeNotAssociateWithTest($entity->getId()),));
+        */
+        /*
+        $form->add('themeidassociate', 'entity', array('multiple' => true,
+            'class' => 'EniQcmFormateurBundle:Theme',
+            'required' => false,
+            'choices' => $this->getThemeAssociateWithTest($entity->getId()),));
+         * 
+         * /
         $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
+        
     }
+    */
+    
     /**
      * Edits an existing Test entity.
      *
      * @Route("/{id}", name="test_update")
-     * @Method("PUT")
+     * @Method("POST")
      * @Template("EniQcmFormateurBundle:Test:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
+        $postVariable = $request->get('eni_qcm_bundle_formateurbundle_test');
+        
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('EniQcmFormateurBundle:Test')->find($id);
-
-        if (!$entity) {
+        $test = $em->getRepository('EniQcmFormateurBundle:Test')->find($id);
+        if (!$test) {
             throw $this->createNotFoundException('Unable to find Test entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            echo 'yes';
-            /*
-             // Récupération de l'entity manager du service doctrine
-            $em = $this->getDoctrine()->getManager();
-            // Récupération du repository utilisateur (gestionnaire de la collection d'uilisateur)
-            $repoCategorie = $em->getRepository('EniLenicoinBundle:Categorie');
-            $categorie = $repoCategorie->find($id);
-            $em->persist($categorie);
-            $em->flush();
-            
-            $section= new \ENI\QCM\Bundle\FormateurBundle\Entity\Section();
-            $section->setTestid();
-            $section->setThemeid();
-            $section->setNumberofquestionsasked($numberofquestionsasked);
-            */
-            
-            var_dump($entity->getThemeid()[0]->getId());
-            //$entity->addThemeid($entity->getThemeid()[0]);
-            
-            $em = $this->getDoctrine()->getManager();
-            foreach ($entity->getThemeid() as $theme){
-                //var_dump($theme->getId());
-                $section= new \ENI\QCM\Bundle\FormateurBundle\Entity\Section();
-                $section->setTestid($entity);
+        
+        //Construct test
+        $test->setName($postVariable['name']);
+        $test->setDescription($postVariable['description']);
+        $test->setStep1($postVariable['step1']);
+        $test->setStep2($postVariable['step2']);
+        
+        if(isset($postVariable['themeidNotAssociate'])){
+            foreach($postVariable['themeidNotAssociate'] as $idTheme) {
+                echo ' => ', $idTheme, '<br />';
+                $theme = $em->getRepository('EniQcmFormateurBundle:Theme')->find($idTheme);
+                $test->addThemeid($theme);
+            }
+            //Insert section
+            foreach ($test->getThemeid() as $theme){
+                $section= new Section();
+                $section->setTestid($test);
                 $section->setThemeid($theme);
                 $section->setNumberofquestionsasked(0);
-                var_dump($section);
                 $em->persist($section);
             }
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('test_edit', array('id' => $id)));
         }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        $em->persist($test);
+        //$test->addThemeid($postVariable['themeidNotAssociate']);
+        var_dump($test);
+        var_dump($request);
+        
+        //Update NumberOfQuestionsAsked
+        if(isset($postVariable['themeidAssociateNumberOfQuestionAsked'])){
+            foreach($postVariable['themeidAssociateNumberOfQuestionAsked'] as $idTheme => $numberOfQuestionsAsked){
+                $section = $em->getRepository('EniQcmFormateurBundle:Section')->findOneBy(array('themeid' => $idTheme, 'testid' => $test->getId()));
+                $section->setNumberofquestionsasked($numberOfQuestionsAsked);
+                $em->persist($section);
+            }
+        }
+        
+        
+        
+        $em->flush();
+        //Fin de validation
+        
+        //Upload de l'image
+        if ($request->getMethod() == 'POST') {
+            $image = $request->files->get('img');
+            $status = 'success';
+            $uploadedURL='';
+            $message='';
+            if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
+                var_dump($image);
+                if (($image->getSize() < 2000000000)) {
+                    $originalName = $image->getClientOriginalName();
+                    $name_array = explode('.', $originalName);
+                    $file_type = $name_array[sizeof($name_array) - 1];
+                    $valid_filetypes = array('jpg', 'jpeg', 'bmp', 'png');
+                    if (in_array(strtolower($file_type), $valid_filetypes)) {
+                      //Start Uploading File
+                      $document = new Document();
+                      $document->setFile($image);
+                      $document->setSubDirectory('public/images');
+                      $document->processFile($test->getId());
+                      $uploadedURL=$uploadedURL = $document->getUploadDirectory() . DIRECTORY_SEPARATOR . $document->getSubDirectory() . DIRECTORY_SEPARATOR . $image->getBasename();
+                    } else {
+                        $status = 'failed';
+                        $message = 'Invalid File Type';
+                    }
+                } else {
+                    $status = 'failed';
+                    $message = 'Size exceeds limit';
+                }
+            } else {
+                $status = 'failed';
+                $message = 'File Error';
+            }
+        }
+        return $this->redirect($this->generateUrl('test_edit', array('id' => $id)));
     }
     /**
      * Deletes a Test entity.
@@ -272,5 +378,42 @@ class TestController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    
+    
+    private function getThemeNotAssociateWithTest ($idTest)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if(!is_null($idTest)){
+            $query = $em->createQuery('SELECT t FROM EniQcmFormateurBundle:Theme t WHERE NOT EXISTS (SELECT t FROM EniQcmFormateurBundle:Section s WHERE s.themeid = t.id AND s.testid = :idTest) ORDER BY t.id');
+            $query->setParameter('idTest', $idTest);
+        }
+        else{
+            $query = $em->createQuery('SELECT t FROM EniQcmFormateurBundle:Theme t ');
+        }
+        
+        $themes = $query->getResult();
+
+        return $themes;
+    }
+    
+    private function getThemeAssociateWithTest ($idTest)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT t FROM EniQcmFormateurBundle:Theme t WHERE EXISTS (SELECT t FROM EniQcmFormateurBundle:Section s WHERE s.themeid = t.id AND s.testid = :idTest) ORDER BY t.id');
+        $query->setParameter('idTest', $idTest);
+        $themes = $query->getResult();
+        return $themes;
+    }
+    
+    private function getNumberOfQuestionForAssociateTheme ($idTest)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT s.numberofquestionsasked FROM EniQcmFormateurBundle:Section s WHERE s.testid = :idTest ORDER BY s.themeid');
+        $query->setParameter('idTest', $idTest);
+        $themes = $query->getResult();
+        return $themes;
     }
 }

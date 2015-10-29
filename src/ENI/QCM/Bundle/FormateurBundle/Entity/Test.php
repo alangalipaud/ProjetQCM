@@ -10,7 +10,7 @@ class Test
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var \DateTime
@@ -220,5 +220,4 @@ class Test
     public function __toString() {
         return $this->name;
     }
-    
 }
