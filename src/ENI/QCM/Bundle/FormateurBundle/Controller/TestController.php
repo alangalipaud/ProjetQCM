@@ -61,7 +61,6 @@ class TestController extends Controller
         
         //Image upload
         if ($request->getMethod() == 'POST') {
-            echo 'yesss !!';
             $this->uploadIllustrationImage($request->files->get('img'),$test->getId());
         }
         
@@ -283,8 +282,6 @@ class TestController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        print_r($request->files->get('img'));
-        die();
         $postVariable = $request->get('eni_qcm_bundle_formateurbundle_test');
         
         $test = $this->postTestTraitement($postVariable, $id);
@@ -403,7 +400,7 @@ class TestController extends Controller
         
         $minute=$postVariable['timepassing']['minute'];
         $second=$postVariable['timepassing']['second'];
-        $timepassing=new \DateTime('2011-11-17 05:'.$minute.':'.$second);
+        $timepassing=new \DateTime('00:'.$minute.':'.$second);
         $test->setTimepassing($timepassing);
         
         if(isset($postVariable['themeidNotAssociate'])){
