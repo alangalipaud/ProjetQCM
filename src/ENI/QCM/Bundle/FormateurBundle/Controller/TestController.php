@@ -16,6 +16,7 @@ use ENI\QCM\Bundle\FormateurBundle\Form\EnrichedTestType;
 use Doctrine\ORM\EntityRepository;
 use \ENI\QCM\Bundle\FormateurBundle\Entity\EnrichedTest;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints\DateTime;
 /**
  * Test controller.
  *
@@ -50,6 +51,24 @@ class TestController extends Controller
      */
     public function createAction(Request $request)
     {
+        /*
+        echo 'yesss !!';
+        die();
+        */
+        $postVariable = $request->get('eni_qcm_bundle_formateurbundle_test');
+        
+        $test = $this->postTestTraitement($postVariable, null);
+        
+        //Image upload
+        if ($request->getMethod() == 'POST') {
+            echo 'yesss !!';
+            $this->uploadIllustrationImage($request->files->get('img'),$test->getId());
+        }
+        
+        return $this->redirect($this->generateUrl('test_show', array('id' => $test->getId())));
+        
+        
+        /*
         $entity = new Test();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -61,11 +80,12 @@ class TestController extends Controller
 
             return $this->redirect($this->generateUrl('test_show', array('id' => $entity->getId())));
         }
-
-        return array(
+       return array(
             'entity' => $entity,
             'form'   => $form->createView(),
         );
+         */
+         
     }
 
     /**
@@ -114,12 +134,21 @@ class TestController extends Controller
     public function newAction()
     {
         $entity = new Test();
-        $form   = $this->createCreateForm($entity);
+        //$form   = $this->createCreateForm($entity);
+        
+        $themeNotAssociate = $this->getThemeNotAssociateWithTest(null);
 
+        return array(
+            'entity'      => $entity,
+            'themeNotAssociate' => $themeNotAssociate,
+        );
+        /*
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
         );
+         * 
+         */
     }
 
     /**
@@ -254,87 +283,17 @@ class TestController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
+        print_r($request->files->get('img'));
+        die();
         $postVariable = $request->get('eni_qcm_bundle_formateurbundle_test');
         
-        $em = $this->getDoctrine()->getManager();
-        $test = $em->getRepository('EniQcmFormateurBundle:Test')->find($id);
-        if (!$test) {
-            throw $this->createNotFoundException('Unable to find Test entity.');
-        }
+        $test = $this->postTestTraitement($postVariable, $id);
         
-        //Construct test
-        $test->setName($postVariable['name']);
-        $test->setDescription($postVariable['description']);
-        $test->setStep1($postVariable['step1']);
-        $test->setStep2($postVariable['step2']);
-        
-        if(isset($postVariable['themeidNotAssociate'])){
-            foreach($postVariable['themeidNotAssociate'] as $idTheme) {
-                echo ' => ', $idTheme, '<br />';
-                $theme = $em->getRepository('EniQcmFormateurBundle:Theme')->find($idTheme);
-                $test->addThemeid($theme);
-            }
-            //Insert section
-            foreach ($test->getThemeid() as $theme){
-                $section= new Section();
-                $section->setTestid($test);
-                $section->setThemeid($theme);
-                $section->setNumberofquestionsasked(0);
-                $em->persist($section);
-            }
-        }
-        $em->persist($test);
-        //$test->addThemeid($postVariable['themeidNotAssociate']);
-        var_dump($test);
-        var_dump($request);
-        
-        //Update NumberOfQuestionsAsked
-        if(isset($postVariable['themeidAssociateNumberOfQuestionAsked'])){
-            foreach($postVariable['themeidAssociateNumberOfQuestionAsked'] as $idTheme => $numberOfQuestionsAsked){
-                $section = $em->getRepository('EniQcmFormateurBundle:Section')->findOneBy(array('themeid' => $idTheme, 'testid' => $test->getId()));
-                $section->setNumberofquestionsasked($numberOfQuestionsAsked);
-                $em->persist($section);
-            }
-        }
-        
-        
-        
-        $em->flush();
-        //Fin de validation
-        
-        //Upload de l'image
+        //Image upload
         if ($request->getMethod() == 'POST') {
-            $image = $request->files->get('img');
-            $status = 'success';
-            $uploadedURL='';
-            $message='';
-            if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
-                var_dump($image);
-                if (($image->getSize() < 2000000000)) {
-                    $originalName = $image->getClientOriginalName();
-                    $name_array = explode('.', $originalName);
-                    $file_type = $name_array[sizeof($name_array) - 1];
-                    $valid_filetypes = array('jpg', 'jpeg', 'bmp', 'png');
-                    if (in_array(strtolower($file_type), $valid_filetypes)) {
-                      //Start Uploading File
-                      $document = new Document();
-                      $document->setFile($image);
-                      $document->setSubDirectory('public/images');
-                      $document->processFile($test->getId());
-                      $uploadedURL=$uploadedURL = $document->getUploadDirectory() . DIRECTORY_SEPARATOR . $document->getSubDirectory() . DIRECTORY_SEPARATOR . $image->getBasename();
-                    } else {
-                        $status = 'failed';
-                        $message = 'Invalid File Type';
-                    }
-                } else {
-                    $status = 'failed';
-                    $message = 'Size exceeds limit';
-                }
-            } else {
-                $status = 'failed';
-                $message = 'File Error';
-            }
+            $this->uploadIllustrationImage($request->files->get('img'),$test->getId());
         }
+        
         return $this->redirect($this->generateUrl('test_edit', array('id' => $id)));
     }
     /**
@@ -415,5 +374,104 @@ class TestController extends Controller
         $query->setParameter('idTest', $idTest);
         $themes = $query->getResult();
         return $themes;
+    }
+    
+    /**
+     * 
+     * @param type $postVariable ex: $request->get('eni_qcm_bundle_formateurbundle_test');
+     * @param type $id : test id
+     */
+    public function postTestTraitement($postVariable, $id){
+        $em = $this->getDoctrine()->getManager();
+        
+        if(is_null($id)){
+            $test = new Test();
+        }
+        else{
+            $test = $em->getRepository('EniQcmFormateurBundle:Test')->find($id);
+            if (!$test) {
+                throw $this->createNotFoundException('Unable to find Test entity.');
+            }
+        }
+        
+        
+        //Construct test
+        $test->setName($postVariable['name']);
+        $test->setDescription($postVariable['description']);
+        $test->setStep1($postVariable['step1']);
+        $test->setStep2($postVariable['step2']);
+        
+        $minute=$postVariable['timepassing']['minute'];
+        $second=$postVariable['timepassing']['second'];
+        $timepassing=new \DateTime('2011-11-17 05:'.$minute.':'.$second);
+        $test->setTimepassing($timepassing);
+        
+        if(isset($postVariable['themeidNotAssociate'])){
+            foreach($postVariable['themeidNotAssociate'] as $idTheme) {
+                echo ' => ', $idTheme, '<br />';
+                $theme = $em->getRepository('EniQcmFormateurBundle:Theme')->find($idTheme);
+                $test->addThemeid($theme);
+            }
+            //Insert section
+            foreach ($test->getThemeid() as $theme){
+                $section= new Section();
+                $section->setTestid($test);
+                $section->setThemeid($theme);
+                $section->setNumberofquestionsasked(0);
+                $em->persist($section);
+            }
+        }
+        $em->persist($test);
+        
+        //Update NumberOfQuestionsAsked
+        if(isset($postVariable['themeidAssociateNumberOfQuestionAsked'])){
+            foreach($postVariable['themeidAssociateNumberOfQuestionAsked'] as $idTheme => $numberOfQuestionsAsked){
+                $section = $em->getRepository('EniQcmFormateurBundle:Section')->findOneBy(array('themeid' => $idTheme, 'testid' => $test->getId()));
+                $section->setNumberofquestionsasked($numberOfQuestionsAsked);
+                $em->persist($section);
+            }
+        }
+        
+        $em->flush();
+        
+        return $test;
+    }
+
+
+    /**
+     * 
+     * @param type $image ex: $request->files->get('img')
+     * @param type $fileName ex: $test->getId()
+     */
+    private function uploadIllustrationImage($image,$fileName){
+        $status = 'success';
+        $uploadedURL='';
+        $message='';
+        if (($image instanceof UploadedFile) && ($image->getError() == '0')) {
+            var_dump($image);
+            if (($image->getSize() < 2000000000)) {
+                $originalName = $image->getClientOriginalName();
+                $name_array = explode('.', $originalName);
+                $file_type = $name_array[sizeof($name_array) - 1];
+                $valid_filetypes = array('jpg', 'jpeg', 'bmp', 'png');
+                if (in_array(strtolower($file_type), $valid_filetypes)) {
+                  //Start Uploading File
+                  $document = new Document();
+                  $document->setFile($image);
+                  $document->setSubDirectory('public/images');
+                  $document->processFile($fileName);
+                  $uploadedURL=$uploadedURL = $document->getUploadDirectory() . DIRECTORY_SEPARATOR . $document->getSubDirectory() . DIRECTORY_SEPARATOR . $image->getBasename();
+                } else {
+                    $status = 'failed';
+                    $message = 'Invalid File Type';
+                }
+            } else {
+                $status = 'failed';
+                $message = 'Size exceeds limit';
+            }
+        } else {
+            $status = 'failed';
+            $message = 'File Error';
+        }
     }
 }

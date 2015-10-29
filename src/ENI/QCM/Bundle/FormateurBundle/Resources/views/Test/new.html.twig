@@ -1,9 +1,69 @@
 {% extends '::base.html.twig' %}
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
 {% block body -%}
     <div class="col-md-12">
         <h1>Test creation</h1>
-        {{ form(form) }}
+        <form name="eni_qcm_bundle_formateurbundle_test" method="post" enctype="multipart/form-data" action="/ProjetQCM/web/app_dev.php/test/">
+            <div id="eni_qcm_bundle_formateurbundle_test">
+                <div class="form-group">
+                    <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_name">Name</label>
+                    <input type="text" id="eni_qcm_bundle_formateurbundle_test_name" name="eni_qcm_bundle_formateurbundle_test[name]" required="required" maxlength="50" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="img">Image illustration</label>
+                    <input type="file" name="img" >
+                </div>
+                <div class="form-group">
+                    <label class="control-label required">Timepassing</label>
+                    <div id="eni_qcm_bundle_formateurbundle_test_timepassing" class="form-inline">
+                        <select id="eni_qcm_bundle_formateurbundle_test_timepassing_hour" name="eni_qcm_bundle_formateurbundle_test[timepassing][minute]" class="form-control">
+                            {% set minutes = [] %} 
+                            {% for i in 0..59%}
+                               {% set minutes = minutes|merge([i]) %}
+                            {% endfor %}
+                            {% for minute in minutes%}
+                                <option value="{{minute}}" >{%if minute < 10 %}0{%endif%}{{minute}}</option>
+                            {% endfor %}
+                        </select>
+                        <select id="eni_qcm_bundle_formateurbundle_test_timepassing_minute" name="eni_qcm_bundle_formateurbundle_test[timepassing][second]" class="form-control">
+                            {% set seconds = [] %} 
+                            {% for i in 0..59%}
+                               {% set seconds = seconds|merge([i]) %}
+                            {% endfor %}
+                            {% for second in seconds%}
+                                <option value="{{second}}">{%if second < 10 %}0{%endif%}{{second}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eni_qcm_bundle_formateurbundle_test_description">Description</label>
+                    <input type="text" id="eni_qcm_bundle_formateurbundle_test_description" name="eni_qcm_bundle_formateurbundle_test[description]" maxlength="2048" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_step1">Step1</label>
+                    <input type="text" id="eni_qcm_bundle_formateurbundle_test_step1" name="eni_qcm_bundle_formateurbundle_test[step1]" required="required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_step2">Step2</label>
+                    <input type="text" id="eni_qcm_bundle_formateurbundle_test_step2" name="eni_qcm_bundle_formateurbundle_test[step2]" required="required" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_themeid">Themeid</label>
+                    <select id="eni_qcm_bundle_formateurbundle_test_themeid" name="eni_qcm_bundle_formateurbundle_test[themeid][]" required="required" class="form-control" multiple="multiple">
+                        {% for theme in themeNotAssociate %}
+                            <option value="{{theme.id}}">{{theme.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="eni_qcm_bundle_formateurbundle_test_submit" name="eni_qcm_bundle_formateurbundle_test[submit]" class="btn-default btn">Create</button>
+                </div>
+                <input type="hidden" id="eni_qcm_bundle_formateurbundle_test__token" name="eni_qcm_bundle_formateurbundle_test[_token]" class="form-control" value="h-WFw4T0ZgcG_NguN5kL8h66mJZMGlYwtW1kpdxr7Xk">
+            </div>
+        </form>
+        
+        {# {{ form(form) }} #}
         <a href="{{ path('test') }}" class="btn btn-primary no-margin">
             Back to the list
             <span class="glyphicon glyphicon-list" aria-hidden="true">

@@ -24,22 +24,22 @@
                 <div class="form-group">
                     <label class="control-label required">Timepassing</label>
                     <div id="eni_qcm_bundle_formateurbundle_test_timepassing" class="form-inline">
-                        <select id="eni_qcm_bundle_formateurbundle_test_timepassing_hour" name="eni_qcm_bundle_formateurbundle_test[timepassing][hour]" class="form-control">
-                            {% set hours = [] %} 
-                            {% for i in 0..23%}
-                               {% set hours = hours|merge([i]) %}
-                            {% endfor %}
-                            {% for hour in hours%}
-                                <option value="{{hour}}" {%if hour == entity.timepassing|date('H') %}selected="selected"{%endif%}>{%if hour < 10 %}0{%endif%}{{hour}}</option>
-                            {% endfor %}
-                        </select>:
-                        <select id="eni_qcm_bundle_formateurbundle_test_timepassing_minute" name="eni_qcm_bundle_formateurbundle_test[timepassing][minute]" class="form-control">
+                        <select id="eni_qcm_bundle_formateurbundle_test_timepassing_hour" name="eni_qcm_bundle_formateurbundle_test[timepassing][minute]" class="form-control">
                             {% set minutes = [] %} 
                             {% for i in 0..59%}
                                {% set minutes = minutes|merge([i]) %}
                             {% endfor %}
                             {% for minute in minutes%}
                                 <option value="{{minute}}" {%if minute == entity.timepassing|date('i') %}selected="selected"{%endif%}>{%if minute < 10 %}0{%endif%}{{minute}}</option>
+                            {% endfor %}
+                        </select>:
+                        <select id="eni_qcm_bundle_formateurbundle_test_timepassing_minute" name="eni_qcm_bundle_formateurbundle_test[timepassing][second]" class="form-control">
+                            {% set seconds = [] %} 
+                            {% for i in 0..59%}
+                               {% set seconds = seconds|merge([i]) %}
+                            {% endfor %}
+                            {% for second in seconds%}
+                                <option value="{{second}}" {%if second == entity.timepassing|date('s') %}selected="selected"{%endif%}>{%if second < 10 %}0{%endif%}{{second}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -76,9 +76,8 @@
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
                         <label class="control-label required">{{theme.name}}</label><br>
-                        
                         <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_theme">Number of question asked :</label>
-                        <input type="text" id="eni_qcm_bundle_formateurbundle_test_themeidAssociate" name="eni_qcm_bundle_formateurbundle_test[themeidAssociateNumberOfQuestionAsked][{{theme.id}}]" required="required" class="form-control" value="{{numberOfQuestionForAssociateTheme[i].numberofquestionsasked}}">
+                        <input type="number" id="eni_qcm_bundle_formateurbundle_test_themeidAssociate" name="eni_qcm_bundle_formateurbundle_test[themeidAssociateNumberOfQuestionAsked][{{theme.id}}]" required="required" class="form-control" value="{{numberOfQuestionForAssociateTheme[i].numberofquestionsasked}}">
                     </div>
                     
                     {% set i = i+1 %}
