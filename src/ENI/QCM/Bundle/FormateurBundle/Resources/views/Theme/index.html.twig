@@ -15,31 +15,25 @@
                     <tr>
                         <td><a href="{{ path('theme_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
                         <td>
-                            <a href="{{ path('theme_show', { 'id': entity.id }) }}">
-                                <button type="button" class="btn btn-info no-margin">
-                                    Show
-                                    <span class="glyphicon glyphicon-align-left" aria-hidden="true">
-                                    </span>
-                                </button>
+                            <a href="{{ path('theme_show', { 'id': entity.id }) }}" class="btn btn-info no-margin">
+                                Show
+                                <span class="glyphicon glyphicon-align-left" aria-hidden="true">
+                                </span>
                             </a>
-                            <a href="{{ path('theme_edit', { 'id': entity.id }) }}">
-                                <button type="button" class="btn btn-success no-margin">
-                                    Edit
-                                    <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                                    </span>
-                                </button>
+                            <a href="{{ path('theme_edit', { 'id': entity.id }) }}" class="btn btn-success no-margin">
+                                Edit
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                                </span>
                             </a>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('theme_new') }}">
-            <button type="button" class="btn btn-success no-margin">
-                Create
+        <a href="{{ path('theme_new') }}" class="btn btn-success no-margin">
+            Create
             <span class="glyphicon glyphicon-plus" aria-hidden="true">
             </span>
-            </button>
         </a>
     </div>
     
