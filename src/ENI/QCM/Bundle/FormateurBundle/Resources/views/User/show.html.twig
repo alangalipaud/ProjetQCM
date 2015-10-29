@@ -18,21 +18,17 @@
         </table>
                
         <br>        
-        <a href="{{ path('user') }}">
-            <button type="button" class="btn btn-primary no-margin">
-                Back to the list
-                <span class="glyphicon glyphicon-list" aria-hidden="true">
-                </span>
-            </button>
+        <a href="{{ path('user') }}" class="btn btn-primary no-margin">
+            Back to the list
+            <span class="glyphicon glyphicon-list" aria-hidden="true">
+            </span>
         </a>
         <br>
         <br>
-        <a href="{{ path('user_edit', { 'id': entity.id }) }}">
-            <button type="button" class="btn btn-success no-margin">
-                Edit
-                <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                </span>
-            </button>
+        <a href="{{ path('user_edit', { 'id': entity.id }) }}" class="btn btn-success no-margin">
+            Edit
+            <span class="glyphicon glyphicon-edit" aria-hidden="true">
+            </span>
         </a>
         <br><br>
         {{ form(delete_form) }}      
