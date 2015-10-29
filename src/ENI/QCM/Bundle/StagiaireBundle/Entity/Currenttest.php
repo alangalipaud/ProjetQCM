@@ -53,7 +53,7 @@ class Currenttest
     /**
      * Set currenttime
      *
-     * @param \DateTime $currenttime
+     * @param \Time $currenttime
      *
      * @return Currenttest
      */
@@ -67,7 +67,7 @@ class Currenttest
     /**
      * Get currenttime
      *
-     * @return \DateTime
+     * @return \Time
      */
     public function getCurrenttime()
     {

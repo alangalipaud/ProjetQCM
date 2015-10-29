@@ -29,6 +29,42 @@
                         </div>
                     </div>
                     </div>
+                    {# ########################################### #}
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
+                        <div class="col-lg-6 col-sm-6 col-xs-6">
+                            <div class="thumbnail">
+                                {% if not entity.currentTest.isCompleted %}
+                                <a title="{{ name }}" href="{{ path('user_currenttest_show', {'id': entity.currentTest.registrationid.id } ) }}">
+                                {% endif %}    
+                                    <img class="img-responsive" src="{{ asset('public/images/' ~ name) }}">
+                                    <div class="caption">
+                                        <h3 class="text-center">{{ entity.currentTest.registrationid.testid }}</h3>
+                                    </div>
+                                {% if not entity.currentTest.isCompleted %}
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-xs-6 text-center">
+                        <div class="col-lg-12 col-sm-12 col-xs-12 text-center">
+                            {% if entity.currentTest.isCompleted %}
+                            <h3>Test terminé</h3>
+                            {% endif %}
+                            {% if not entity.currentTest.isCompleted %}
+                            <h3>Temps de passage :</h3>
+                            {% endif %}
+                            {% if not entity.currentTest.isCompleted %}
+                            <h1><div class="label label-default">{{ entity.currentTest.registrationid.testid.timepassing.format('i:s') }}</div></h1>
+                            {% endif %}
+                            {% if entity.currentTest.isCompleted %}
+                            <h2><a href="{{ path('user_currenttest_results', {'id': entity.currentTest.registrationid.id }) }}" class="label label-danger">Afficher le(s) résultat(s)</a></h2>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-12 col-sm-12 col-xs-12 text-center top-buffer">
+                            <h4>{{ entity.numberofquestions }} questions</h4>
+                        </div>
+                    </div>
+                    </div>
                 {% endfor %}
           </div>
           <hr>
