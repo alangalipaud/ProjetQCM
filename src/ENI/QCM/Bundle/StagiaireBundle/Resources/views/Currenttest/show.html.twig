@@ -1,32 +1,92 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Currenttest</h1>
+    <div class="container">
+        <h1>{{ entity.registrationId.testId.name }}</h1>
+        <h2>{{ entity.issuerafflingid.questionid.themeid.name }}</h2>
+        <div class="row">
+            <form action="user_currenttest_post" method="Post">
+                <div class="col-lg-8 col-sm-8 col-xs-8">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <p>{{ entity.issuerafflingid.questionid.wording }}</p>
+                      </div>
+                        <div class="panel-body">
+                            {% for answer in answers %}
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="answers[]" value="{{ answer.id }}" aria-label="...">
+                                </span>
+                                <p class="form-control">{{ answer.wording }}</p>
+                            </div><!-- /input-group -->
+                            <br />
+                            {% endfor %}
+                      </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-xs-4 text-center">
+                    <div class="col-lg-12 col-sm-12 col-xs-12 text-center">
+                        <h3>Temps restant :</h3>
+                        <h1><div id="remaining_time" class="label label-default">00:03</div></h1>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-xs-12 text-center top-buffer">
+                        <h4>Question {{ app.session.get('indexOfQuestion') }} sur {{ app.session.get('numberOfQuestions') }}</h4> 
+                        <div class="input-group col-lg-8 col-sm-8 col-xs-8 col-lg-offset-2">
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="..." name="isMarqueted" >
+                            </span>
+                            <p class="form-control bg-danger">"Marquer" la question</p>
+                        </div><!-- /input-group -->
+                    </div>
+                </div>
+                <hr>
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12">
+                        {% if app.session.get('indexOfQuestion') != app.session.get('numberOfQuestions') %}
+                            <button type="submit" name="action" value="Next" class="btn btn-succes btn-lg pull-right">
+                                Question Suivante
+                                <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true">
+                                </span>
+                            </button>
+                        {% endif %}
+                        {% if app.session.get('indexOfQuestion') == app.session.get('numberOfQuestions') %}
+                            <button type="submit" name="action" value="Synthese" class="btn btn-succes btn-lg pull-right">
+                                Synthèse
+                                <span class="glyphicon glyphicon-th" aria-hidden="true">
+                                </span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+{% endblock %}
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Currenttime</th>
-                <td>{{ entity.currenttime|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Iscompleted</th>
-                <td>{{ entity.iscompleted }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function (e) {
+        var $worked = $("#remaining_time");
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('currenttest') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('currenttest_edit', { 'id': entity.registrationid }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+        function update() {
+            var myTime = $worked.html();
+            var ss = myTime.split(":");
+            var dt = new Date();
+            dt.setHours(0);
+            dt.setMinutes(ss[0]);
+            dt.setSeconds(ss[1]);
+
+            var dt2 = new Date(dt.valueOf() - 1000);
+            var temp = dt2.toTimeString().split(" ");
+            var ts = temp[0].split(":");
+
+            $worked.html(ts[1]+":"+ts[2]);
+            setTimeout(update, 1000);
+        }
+
+        setTimeout(update, 1000);
+        });
+    </script>
 {% endblock %}

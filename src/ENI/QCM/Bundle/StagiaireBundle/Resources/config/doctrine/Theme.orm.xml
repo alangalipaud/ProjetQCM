@@ -9,6 +9,5 @@
         <option name="fixed"/>
       </options>
     </field>
-    <many-to-many field="testid" target-entity="Test" inversed-by="themeid" fetch="LAZY">
   </entity>
 </doctrine-mapping>

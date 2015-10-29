@@ -115,7 +115,7 @@ class Issueraffling
      */
     public function setQuestionId(\ENI\QCM\Bundle\StagiaireBundle\Entity\Question $questionId = null)
     {
-        $this->questionId = $questionId;
+        $this->questionid = $questionId;
 
         return $this;
     }
@@ -127,7 +127,7 @@ class Issueraffling
      */
     public function getQuestionId()
     {
-        return $this->questionId;
+        return $this->questionid;
     }
 
     /**
@@ -177,6 +177,11 @@ class Issueraffling
     {
         $this->answerid->removeElement($answerid);
     }
+    
+    public function removeAllAnswer()
+    {
+        $this->answerid->clear();
+    }
 
     /**
      * Get answerid
@@ -186,5 +191,9 @@ class Issueraffling
     public function getAnswerid()
     {
         return $this->answerid;
+    }
+    
+    public function __toString() {
+        return $this->id.' - '.$this->questionid->getWording();
     }
 }

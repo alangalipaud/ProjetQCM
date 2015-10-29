@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <div class="col-md-12 text-center">
+        <h1>{{ currenttest.registrationId.testId.name }}</h1>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Synthèse</h3>
+            </div>
+            <div class="panel-body row">
+                <div class="col-lg-12 col-sm-12 col-xs-12 text-center">
+                        <h3>Temps restant :</h3>
+                        <h1><div id="remaining_time" class="label label-default">00:03</div></h1>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-9">
+                        <br>
+                        <br>
+                        {{ numberOfQuestionsAnswered }} questions répondues sur {{ allissuerafflings|length }}<br>
+                        Modification de réponse : (Cliquer sur la réponse à modifier)
+                    </div>
+                    <div class="col-md-12 hidden-md hidden-lg">
+                        <br>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-success" >&nbsp;&nbsp;&nbsp;&nbsp;</button> Question répondue<br>
+                        <br>
+                        <button type="button" class="btn btn-warning" >&nbsp;&nbsp;&nbsp;&nbsp;</button> Question marquée<br>
+                        <br>
+                        <button type="button" class="btn btn-danger" >&nbsp;&nbsp;&nbsp;&nbsp;</button> Question non répondue
+                    </div>
+                </div>
+                <div class="col-md-12">
+                   <br> 
+                </div>
+                <div class="col-md-9 btn-troop">
+                    <form>
+                    {% set nbissueraffling = 0 %}
+                    {% for anissueraffling in allissuerafflings %}
+                        {% set nbissueraffling = nbissueraffling+1 %}
+                        <button type="submit" formaction="{{ path('user_currenttest_show_question', {'id': nbissueraffling }) }}" class="btn btn-inline-block {{ anissueraffling.classstatement }}">{% if nbissueraffling < 10 %}0{% endif %}{{ nbissueraffling }}</button>
+                    {% endfor %}
+                    </form>
+                </div>
+                <div class="col-md-3" >
+                </div>
+                <div class="col-md-12" style="margin-top: 20px;">
+                    <button class="btn btn-default pull-right" type="submit">Valider le test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function (e) {
+        var $worked = $("#remaining_time");
+
+        function update() {
+            var myTime = $worked.html();
+            var ss = myTime.split(":");
+            var dt = new Date();
+            dt.setHours(0);
+            dt.setMinutes(ss[0]);
+            dt.setSeconds(ss[1]);
+
+            var dt2 = new Date(dt.valueOf() - 1000);
+            var temp = dt2.toTimeString().split(" ");
+            var ts = temp[0].split(":");
+
+            $worked.html(ts[1]+":"+ts[2]);
+            setTimeout(update, 1000);
+        }
+
+        setTimeout(update, 1000);
+        });
+    </script>
+{% endblock %}

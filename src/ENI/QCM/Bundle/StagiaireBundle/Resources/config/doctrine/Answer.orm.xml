@@ -18,6 +18,5 @@
         <join-column name="questionId" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-many field="issuerafflingid" target-entity="Issueraffling" mapped-by="answerid" fetch="LAZY"/>
   </entity>
 </doctrine-mapping>
