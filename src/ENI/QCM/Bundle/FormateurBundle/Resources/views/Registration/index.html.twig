@@ -18,31 +18,25 @@
                     <td><a href="{{ path('registration_show', { 'id': entity.id }) }}">{{ entity.startdate|date('Y-m-d H:i:s') }}</a></td>
                     <td>{% if entity.enddate %}{{ entity.enddate|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>
-                        <a href="{{ path('registration_show', { 'id': entity.id }) }}">
-                            <button type="button" class="btn btn-info no-margin">
-                                Show
-                                <span class="glyphicon glyphicon-align-left" aria-hidden="true">
-                                </span>
-                            </button>
+                        <a href="{{ path('registration_show', { 'id': entity.id }) }}" class="btn btn-info no-margin">
+                            Show
+                            <span class="glyphicon glyphicon-align-left" aria-hidden="true">
+                            </span>
                         </a>
-                        <a href="{{ path('registration_edit', { 'id': entity.id }) }}">
-                            <button type="button" class="btn btn-success no-margin">
-                                Edit
-                                <span class="glyphicon glyphicon-edit" aria-hidden="true">
-                                </span>
-                            </button>
+                        <a href="{{ path('registration_edit', { 'id': entity.id }) }}" class="btn btn-success no-margin">
+                            Edit
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true">
+                            </span>
                         </a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('registration_new') }}">
-            <button type="button" class="btn btn-success no-margin">
-                Create
+        <a href="{{ path('registration_new') }}" class="btn btn-success no-margin">
+            Create
             <span class="glyphicon glyphicon-plus" aria-hidden="true">
             </span>
-            </button>
         </a>
     </div>
 {% endblock %}
