@@ -4,12 +4,10 @@
     <div class="col-md-12">
         <h1>Test creation</h1>
         {{ form(form) }}
-        <a href="{{ path('test') }}">
-            <button type="button" class="btn btn-primary no-margin">
-                Back to the list
-                <span class="glyphicon glyphicon-list" aria-hidden="true">
-                </span>
-            </button>
+        <a href="{{ path('test') }}" class="btn btn-primary no-margin">
+            Back to the list
+            <span class="glyphicon glyphicon-list" aria-hidden="true">
+            </span>
         </a>
     </div>
 {% endblock %}
