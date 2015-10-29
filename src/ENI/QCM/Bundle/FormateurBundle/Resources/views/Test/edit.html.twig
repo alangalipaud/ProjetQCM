@@ -12,15 +12,17 @@
             <input type="hidden" name="_method" value="POST">
             
             <div id="eni_qcm_bundle_formateurbundle_test">
+                <img src="{{asset('public/images/' ~ entity.id)}}" width="150px" height="auto">
+                <div class="form-group">
+                    <label class="control-label required" for="img">Image illustration</label>
+                    <input type="file" name="img" >
+                </div>
                 <div class="form-group">
                     <label class="control-label required" for="eni_qcm_bundle_formateurbundle_test_name">Name</label>
                     <input type="text" id="eni_qcm_bundle_formateurbundle_test_name" name="eni_qcm_bundle_formateurbundle_test[name]" required="required" maxlength="50" class="form-control" value="{{ entity.name }}">
                 </div>
                 {# {{ form(image_form) }} #}
-                <div class="form-group">
-                    <label class="control-label required" for="img">Image illustration</label>
-                    <input type="file" name="img" >
-                </div>
+                
                 <div class="form-group">
                     <label class="control-label required">Timepassing</label>
                     <div id="eni_qcm_bundle_formateurbundle_test_timepassing" class="form-inline">
