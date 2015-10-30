@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        {% set user = test.registrationid.userid %}
+        <h3>{{ user.username }}</h3>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+        <h1>{{ test.registrationid.testid.name }}</h1>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Réussite</h3>
+              <p><div id="result"></div></p>
+            </div>
+            <div class="panel-body">
+                {% for entity in entities %}
+                <div id="theme_{{ entity.theme.id }}_div" class="col-md-4"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <a href="../../" class="col-md-11">
+            <button type="button" class="btn btn-success btn-lg pull-right">
+                Ok
+                <span class="glyphicon glyphicon-ok" aria-hidden="true">
+                </span>
+            </button>
+        </a>
+    </div>
+
+{% endblock body %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+        total= 0;
+        // Create the data table.
+        {% for entity in entities %}
+            var data = new google.visualization.DataTable();
+            result = ({{ entity.nbOfGoodAnswers / entity.nbOfQuestions }})*100;
+            total = total+result;
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+              ['Réussite', result],
+              ['Echec', 100-result]
+            ]);
+
+            // Set chart options
+            var options = {title:'Theme '+{{ entity.theme.id }},
+                           chartArea:{ width:"80%", height:"80%" },
+                           width:300,
+                           height:200,
+                           is3D: true,
+                       slices: {
+                0: { color: 'green' },
+                1: { color: 'red' }
+              }};
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('theme_{{ entity.theme.id }}_div'));
+            chart.draw(data, options);
+        {% endfor %}
+        var $worked = $("#result");
+        $worked.html("Niveau aquisition : "+(total/{{ entities|length }}).toFixed(0)+"%");
+      }
+    </script>
+{% endblock %}

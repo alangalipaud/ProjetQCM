@@ -13,7 +13,7 @@
             <div class="panel-body row">
                 <div class="col-lg-12 col-sm-12 col-xs-12 text-center">
                         <h3>Temps restant :</h3>
-                        <h1><div id="remaining_time" class="label label-default">00:03</div></h1>
+                        <h1><div id="remaining_time" class="label label-default">{{ currenttest.currenttime|date("i:s") }}</div></h1>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-9">
@@ -37,19 +37,19 @@
                    <br> 
                 </div>
                 <div class="col-md-9 btn-troop">
-                    <form>
-                    {% set nbissueraffling = 0 %}
-                    {% for anissueraffling in allissuerafflings %}
-                        {% set nbissueraffling = nbissueraffling+1 %}
-                        <button type="submit" formaction="{{ path('user_currenttest_show_question', {'id': nbissueraffling }) }}" class="btn btn-inline-block {{ anissueraffling.classstatement }}">{% if nbissueraffling < 10 %}0{% endif %}{{ nbissueraffling }}</button>
-                    {% endfor %}
+                    <form method="get">
+                        {% set nbissueraffling = 0 %}
+                        {% for anissueraffling in allissuerafflings %}
+                            {% set nbissueraffling = nbissueraffling+1 %}
+                            <button type="submit" formaction="{{ path('user_currenttest_show_question', {'id': nbissueraffling }) }}" class="btn btn-inline-block {{ anissueraffling.classstatement }}">{% if nbissueraffling < 10 %}0{% endif %}{{ nbissueraffling }}</button>
+                        {% endfor %}
                     </form>
                 </div>
                 <div class="col-md-3" >
                 </div>
-                <div class="col-md-12" style="margin-top: 20px;">
-                    <button class="btn btn-default pull-right" type="submit">Valider le test</button>
-                </div>
+                    <div class="col-md-12" style="margin-top: 20px;">
+                        <a href="{{ path('user_currenttest_valid', {'id': currenttest.registrationid.id }) }}"><button class="btn btn-default pull-right" >Valider le test</button></a>
+                    </div>
             </div>
         </div>
     </div>
@@ -79,6 +79,24 @@
         }
 
         setTimeout(update, 1000);
+            
+            var timeValue = ts[1]+":"+ts[2];
+            $worked.html(timeValue);
+            if(timeValue == "00:00"){
+                Redirect();
+            }
+            setTimeout(update, 1000);
+            
+        }
+
+        setTimeout(update, {{ entity.currenttime|date("i:s") }});
         });
+    </script>
+    
+    <script type="text/javascript">   
+        function Redirect() 
+        {  
+        window.location="{{ path('user_currenttest_valid', {'id': entity.registrationid.id }) }}"; 
+        }  
     </script>
 {% endblock %}
