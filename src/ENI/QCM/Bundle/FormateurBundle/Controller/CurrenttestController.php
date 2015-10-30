@@ -21,7 +21,7 @@ class CurrenttestController extends Controller
     /**
      * Lists all Currenttest entities.
      *
-     * @Route("/", name="currenttest")
+     * @Route("/", name="currenttest2")
      * @Method("GET")
      * @Template()
      */

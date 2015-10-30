@@ -5,3 +5,8 @@ eni_qcm_formateur_homepage:
 eni_qcm_formateur:
     resource: "@EniQcmFormateurBundle/Controller/"
     type:     annotation
+
+
+eni_qcm_formateur_after_login:
+    resource: "@EniQcmFormateurBundle/Redirection/"
+    defaults: { _controller: EniQcmFormateurBundle:AfterLoginRedirection:onAuthenticationSuccess }

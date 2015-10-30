@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ENI\QCM\Bundle\FormateurBundle\Entity\User;
 use ENI\QCM\Bundle\FormateurBundle\Form\UserType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controller.
@@ -35,6 +36,24 @@ class UserController extends Controller
             'entities' => $entities,
         );
     }
+    
+    /**
+     * Displays a form to create a new User entity.
+     *
+     * @Route("/logout", name="user_logout")
+     * @Method("GET")
+     * @Template()
+     */
+    public function logOutUserAction(Request $request){
+        echo 'logout';
+        $this->get('security.token_storage')->setToken(null);
+        $this->get('request')->getSession()->invalidate();
+        //$redirection = new RedirectResponse($this->router->generate('login'));
+        //return $redirection;
+        die();
+    }
+
+
     /**
      * Creates a new User entity.
      *

@@ -13,4 +13,23 @@
         </service>
     </services>
     -->
+    <!--
+    <services>
+        <service id="my_mailer" class="Acme\HelloBundle\Mailer">
+            <argument>sendmail</argument>
+        </service>
+    </services>
+    my_mailer:
+        class:        Acme\HelloBundle\Mailer
+        arguments:    [sendmail]
+    redirect.after.login:
+        class: ENI\QCM\Bundle\FormateurBundle\AfterLoginRedirection
+        arguments: [@router]
+    -->
+    <services>
+        <service id="redirect.after.login" class="ENI\QCM\Bundle\FormateurBundle\Redirection\AfterLoginRedirection">
+            <argument type="service" id="router"/>
+        </service>
+    </services>
+   
 </container>
