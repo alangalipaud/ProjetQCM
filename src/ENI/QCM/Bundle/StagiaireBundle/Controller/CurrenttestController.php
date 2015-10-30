@@ -440,11 +440,11 @@ class CurrenttestController extends Controller
                 $answersGivenByQuestion = array();
                 if($allQuestions[$i]->getThemeId() == $theme){
                     $nbOfQuestions++;
-                }
+                
                 
                 foreach ($allGoodAnswers as $gaPart1){
                     foreach ($gaPart1 as $aGoodAnswer){
-                        if($aGoodAnswer->getQuestionid() == $allQuestions[$i]){
+                        if($aGoodAnswer->getQuestionid() == $allQuestions[$i] ){
                         $goodAnswersByQuestion[] = $aGoodAnswer->getId();
                         }
                     }
@@ -456,9 +456,6 @@ class CurrenttestController extends Controller
                         }
                     }
                 }
-                
-                var_dump($goodAnswersByQuestion);
-                var_dump($answersGivenByQuestion);
                 /*
                 for($j=0; $j< sizeof($allGoodAnswers); $j++){
                     if($allGoodAnswers[$j]->getQuestionid() == $allQuestions[$i]){
@@ -474,6 +471,7 @@ class CurrenttestController extends Controller
                 if($goodAnswersByQuestion == $answersGivenByQuestion){
                     $nbOfGoodAnswers++;
                 }
+                }
                 unset($goodAnswersByQuestion);
                 unset($answersGivenByQuestion);
             }
@@ -482,6 +480,7 @@ class CurrenttestController extends Controller
         //var_dump($entities);
         return array(
             'entities'   => $entities,
+            'test'   => $test,
         );
     }
     
