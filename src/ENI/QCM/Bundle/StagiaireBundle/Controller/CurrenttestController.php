@@ -38,69 +38,6 @@ class CurrenttestController extends Controller
             'entities' => $entities,
         );
     }
-    /**
-     * Creates a new Currenttest entity.
-     *
-     * @Route("/", name="currenttest_create")
-     * @Method("POST")
-     * @Template("EniQcmStagiaireBundle:Currenttest:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new Currenttest();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('currenttest_show', array('id' => $entity->getId())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Creates a form to create a Currenttest entity.
-     *
-     * @param Currenttest $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Currenttest $entity)
-    {
-        $form = $this->createForm(new CurrenttestType(), $entity, array(
-            'action' => $this->generateUrl('currenttest_create'),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
-     * Displays a form to create a new Currenttest entity.
-     *
-     * @Route("/new", name="currenttest_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Currenttest();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
 
     /**
      * Finds and displays a Currenttest entity.
@@ -173,7 +110,7 @@ class CurrenttestController extends Controller
      */
     public function writeAction(Request $request)
     {   
-        $_SESSION['timeOfQuestionShow'] = new \DateTime('NOW');
+        //$_SESSION['timeOfQuestionShow'] = new \DateTime('NOW');
         $answers = $request->get('answers');
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($_SESSION['currentTest']);
@@ -235,6 +172,7 @@ class CurrenttestController extends Controller
             }
             return $this->forward('EniQcmStagiaireBundle:Currenttest:show', array('id' => $_SESSION['currentTest']));
         }
+        
         if($request->get('action') == 'Synthese'){
             return $this->forward('EniQcmStagiaireBundle:Currenttest:synthese', array('id' => $_SESSION['currentTest']));
         }
@@ -324,6 +262,7 @@ class CurrenttestController extends Controller
            $restanttime = new \DateTime($entity->getCurrenttime()->add($dif)->format('H:i:s'));
            $entity->setCurrenttime($restanttime);
            $em->flush();
+           
         }
         else{
             /*** Enregistrement des données ***/
@@ -414,8 +353,7 @@ class CurrenttestController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function resultAction($id){
-        $em = $this->getDoctrine()->getManager();
+    public function resultAction($id){$em = $this->getDoctrine()->getManager();
         $test = $em->getRepository('EniQcmStagiaireBundle:Currenttest')->find($id);
         $allissueraffling = $em->getRepository('EniQcmStagiaireBundle:Issueraffling')->findBy(array('registrationid' => $test->getRegistrationid()));
         //var_dump($allissueraffling);

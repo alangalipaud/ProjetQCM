@@ -88,12 +88,24 @@
             var dt2 = new Date(dt.valueOf() - 1000);
             var temp = dt2.toTimeString().split(" ");
             var ts = temp[0].split(":");
-
-            $worked.html(ts[1]+":"+ts[2]);
+            
+            var timeValue = ts[1]+":"+ts[2];
+            $worked.html(timeValue);
+            if(timeValue == "00:00"){
+                Redirect();
+            }
             setTimeout(update, 1000);
+            
         }
 
-        setTimeout(update, 1000);
+        setTimeout(update, {{ entity.currenttime|date("i:s") }});
         });
+    </script>
+    
+    <script type="text/javascript">   
+        function Redirect() 
+        {  
+        window.location="{{ path('user_currenttest_valid', {'id': entity.registrationid.id }) }}"; 
+        }  
     </script>
 {% endblock %}
